@@ -1,0 +1,101 @@
+[
+  {
+    "id" : 1,
+    "name": "Ghee",
+    "des" : "Very Fresh Product Very Fresh Product Very Fresh Product Very Fresh Product Very Fresh Product Very Fresh Product Very Fresh Product Very Fresh Product Very Fresh Product",
+    "price" : "200",
+    "color" : "0xffffdb61",
+    "size": "500",
+    "image": "lib/assets/asset/ghee_image.jpeg"
+  },
+
+
+  {
+    "id" : 2,
+    "name": "Honey",
+    "des" : "Very Fresh Honey Very Fresh Honey Very Fresh Honey Very Fresh Honey Very Fresh Honey Very Fresh Honey",
+    "price" : "300",
+    "color" : "0xff3c3b3b",
+    "size": "250",
+    "image": "lib/assets/asset/honeyhd.jpeg"
+  },
+
+  {
+    "id" : 3,
+    "name": "Oil",
+    "des" : "Very Fresh Oil Very Fresh Oil Very Fresh Oil Very Fresh Oil Very Fresh Oil",
+    "price" : "100",
+    "color" : "0xff87e4ff",
+    "size": "500",
+    "image": "lib/assets/asset/oil_hd.jpeg"
+  },
+
+  {
+    "id" : 4,
+    "name": "Vegetable",
+    "des" : "Very Fresh Vegetable Very Fresh Vegetable Very Fresh Vegetable Very Fresh Vegetable Very Fresh Vegetable v",
+    "price" : "50",
+    "color" : "0xff43b268",
+    "size": "500",
+    "image": "lib/assets/asset/vegetable.jpeg"
+  },
+
+  {
+    "id" : 5,
+    "name": "Fruits",
+    "des" : "Very Fresh fruits",
+    "price" : "70",
+    "color" : "0xff4dd3f6",
+    "size": "350",
+    "image": "lib/assets/asset/guser_logo.png"
+  },
+
+  {
+    "id" : 6,
+    "name": "Butter",
+    "des" : "Very Fresh Honey Very Fresh HoneyVery Fresh Honey Very Fresh Honey Very Fresh Honey",
+    "price" : "250",
+    "color" : "0xff3c3b3b",
+    "size": "250",
+    "image": "lib/assets/asset/butter_hd.jpeg"
+  },
+
+  {
+    "id" : 7,
+    "name": "Oilq",
+    "des" : "Very Fresh Oil Very Fresh Oil Very Fresh Oil Very Fresh Oil Very Fresh Oil",
+    "price" : "150",
+    "color" : "0xff87e4ff",
+    "size": "500",
+    "image": "lib/assets/asset/oil_hd.jpeg"
+  },
+
+  {
+    "id" : 8,
+    "name": "vegetableq",
+    "des" : "Very Fresh Vegetable Very Fresh Vegetable Very Fresh Vegetable Very Fresh Vegetable Very Fresh Vegetable",
+    "price" : "60",
+    "color" : "0xff43b268",
+    "size": "500",
+    "image": "lib/assets/asset/vegetable.jpeg"
+  },
+
+  {
+    "id" : 9,
+    "name": "Fruits",
+    "des" : "Very Fresh fruits Very Fresh fruits Very Fresh fruits v Very Fresh fruits",
+    "price" : "80",
+    "color" : "0xff4dd3f6",
+    "size": "900",
+    "image": "lib/assets/asset/fruitshd.jpeg"
+  },
+  {
+    "id" : 10,
+    "name": "Honeyq",
+    "des" : "Very Fresh Honey Very Fresh Honey Very Fresh Honey Very Fresh Honey Very Fresh Honey",
+    "price" : "250",
+    "color" : "0xff3c3b3b",
+    "size": "500",
+    "image": "lib/assets/asset/deliver_gyros.png"
+  }
+]

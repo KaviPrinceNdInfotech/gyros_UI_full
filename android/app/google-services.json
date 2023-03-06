@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "34375333661",
+    "project_id": "gyrosfarm-b8a14",
+    "storage_bucket": "gyrosfarm-b8a14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34375333661:android:35685f8ee5a349f2dc53f4",
+        "android_client_info": {
+          "package_name": "com.ndinfotech.gyros_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34375333661-lebpf39b6qidppii5di96ui4qec129b2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRniKIo6i0vvgZnsCwWzJENvSCiv99Lm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34375333661-lebpf39b6qidppii5di96ui4qec129b2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
