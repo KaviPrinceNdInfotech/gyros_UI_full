@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:gyros_app/models/checkout_model.dart';
 import 'package:gyros_app/models/list_of_cart_model_api.dart';
 import 'package:gyros_app/models/no_of_cart_item_model.dart';
 import 'package:gyros_app/services/api_provider.dart';
@@ -14,14 +15,29 @@ class CartController extends GetxController {
   RxBool isLoading = true.obs;
   String cartlistid = '';
   String productid = '';
+  CheckoutModel? checkoutModel;
+
   FlashProductByIdController _flashProductByIdController =
-      Get.put(FlashProductByIdController());
+  Get.put(FlashProductByIdController());
   // add  a dict  to store the products in the cart .
 
   var _products = {}.obs;
   int get count => _products.length;
 
   ///
+  ///todo from here checkout model value..............
+
+  void getcheckoutApi() async {
+    isLoading(true);
+
+    checkoutModel = await ApiProvider.GetCheckoutApi();
+    if (checkoutModel?.result?.totalPrice == null) {
+      //Get.to(() => TotalPrice());
+      isLoading(false);
+
+      //Get.to(()=>Container());
+    }
+  }
 
   // void CartListgApi() async {
   //   try {
@@ -50,6 +66,20 @@ class CartController extends GetxController {
 
     cartListModel = await ApiProvider.GetCartApi();
     if (cartListModel != null) {
+      getcheckoutApi();
+
+
+      ///TODO: we can navigate directly this page through this navigation with add to cart with Id.
+      Get.to(
+            () => Cartproducts(), //next page class
+        duration: Duration(
+            milliseconds: 300), //duration of transitions, default 1 sec
+        transition:
+        // Transition.leftToRight //transition effect
+        // Transition.fadeIn
+        //Transition.size
+        Transition.zoom,
+      );
       //Get.to(() => ItemDetailss());
       isLoading(false);
 
@@ -72,14 +102,14 @@ class CartController extends GetxController {
 
       ///TODO: we can navigate directly this page through this navigation with add to cart with Id.
       Get.to(
-        () => Cartproducts(), //next page class
+            () => Cartproducts(), //next page class
         duration: Duration(
             milliseconds: 300), //duration of transitions, default 1 sec
         transition:
-            // Transition.leftToRight //transition effect
-            // Transition.fadeIn
-            //Transition.size
-            Transition.zoom,
+        // Transition.leftToRight //transition effect
+        // Transition.fadeIn
+        //Transition.size
+        Transition.zoom,
       );
 
       //CallLoader.hideLoader();
@@ -110,8 +140,9 @@ class CartController extends GetxController {
     http.Response r = await ApiProvider.cartplusApi(Id);
 
     if (r.statusCode == 200) {
-      CallLoader.hideLoader();
       CartListgApi();
+      CallLoader.hideLoader();
+
 
       //Get.to(() => Cartproducts());
     }
@@ -134,6 +165,7 @@ class CartController extends GetxController {
     super.onInit();
 
     CartListgApi();
+    getcheckoutApi();
     cartlistnoApi();
     //addtocartApi();
   }

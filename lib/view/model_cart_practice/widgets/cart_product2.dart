@@ -449,6 +449,7 @@
 ///
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
@@ -457,11 +458,13 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gyros_app/constants/app_colors.dart';
+import 'package:gyros_app/controllers/check_out_controller/check_out_controlles.dart';
 import 'package:gyros_app/controllers/coupan_post_controller/first_user_post_coupan_controller.dart';
 import 'package:gyros_app/services/api_provider.dart';
 import 'package:gyros_app/view/cart_new_section/empty_cart/empty_cart.dart';
 import 'package:gyros_app/view/custom_widgets/my_theme.dart';
 import 'package:gyros_app/view/model_cart_practice/controllers/cart_controllersss.dart';
+import 'package:gyros_app/widgets/circular_loader.dart';
 import 'package:neopop/utils/color_utils.dart';
 import 'package:neopop/utils/constants.dart';
 import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
@@ -487,6 +490,7 @@ class Cartproducts extends StatelessWidget {
   FirstCoupanPostController _firstCoupanPostController = Get.put(FirstCoupanPostController());
   CoupanApplyController _coupanApplyController = Get.put(CoupanApplyController());
   CoupanTextController _coupanTextController = Get.put(CoupanTextController());
+  CheckoutController _checkoutController = Get.put(CheckoutController());
   Cartproducts({Key? key}) : super(key: key);
 
   final datacount = GetStorage();
@@ -496,6 +500,8 @@ class Cartproducts extends StatelessWidget {
   }
 
   RxBool isLoading = false.obs;
+
+
 /////////
 
   // var coupan =  pref.setString('coupan_apply', _coupanListController.getaboutthecoupan!.result[indexx].couponCode);
@@ -512,571 +518,655 @@ class Cartproducts extends StatelessWidget {
 //   }
 
 
+
   @override
   Widget build(BuildContext context ) {
-  // ww= datacount.read('coupan_apply');
-  //   print("##########&&&&&&&&&&&&#3: ${ww}");
-  //  var coupan1 =  pref.getString('coupan_apply');
-   // var a = get_coupan();
-   // print("jhfjkshfjkshg: ${a}");
+    // ww= datacount.read('coupan_apply');
+    //   print("##########&&&&&&&&&&&&#3: ${ww}");
+    //  var coupan1 =  pref.getString('coupan_apply');
+    // var a = get_coupan();
+    // print("jhfjkshfjkshg: ${a}");
     //SharedPreferences pref =  SharedPreferences.getInstance() ;
-  // _loaddata();
+    // _loaddata();
 
-   // print("bncnbgebdncjhdbc: ${_coupanListController.Companycoupon.text}");
- //   print("jdfkjsdfkskkldnsdjnm: ${_coupanListController.getaboutthecoupan!.result[0].couponCode}");
+    // print("bncnbgebdncjhdbc: ${_coupanListController.Companycoupon.text}");
+    //   print("jdfkjsdfkskkldnsdjnm: ${_coupanListController.getaboutthecoupan!.result[0].couponCode}");
     Size size = MediaQuery.of(context).size;
+    var prefs = GetStorage();
+    var rahul = prefs.read("totalCostR");
     var coupan1;
-   // var coupan1 =  pref.getString('coupan_apply');
+    //var coupan1 =  pref.getString('coupan_apply');
     return Scaffold(
       body:
       SafeArea(
         child: Obx(() => (controller.isLoading.value)
-              ? Center(child: CircularProgressIndicator())
-              : controller.cartListModel?.result == null
-                  ? Center(child: Text("You have no item in your Cart"))
-           : Container(
-            height: size.height,
-            width: size.width,
-            decoration: BoxDecoration(
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(9.0),
-                    child: Row(
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: Icon(
-                            Icons.arrow_back_ios_outlined,
-                            color: AppColors.themecolors,
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.28,
-                        ),
-                        Text(
-                          'Cart Item',
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.themecolors,
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.28,
-                        ),
-                      ],
-                    ),
-                  ),
-                  ///test
-                  Container(
-                     // height: size.height * 0.65,
-                    // color: Colors.green,
-                    child: CartProductCard()
-                    // GetBuilder<CartController>(
-                    //   builder: (controller) {
-                    //     return CartProductCard();
-                    //   },
-                    // ),
-                  ),
-                  /// original
-                  // SizedBox(
-                  //   height: size.height * 0.65,
-                  //   child: GetBuilder<CartController>(
-                  //     builder: (controller) {
-                  //       return CartProductCard();
-                  //     },
-                  //   ),
-                  // ),
-                  // Padding(
-                  //   padding: EdgeInsets.symmetric(
-                  //       horizontal: 2.w, vertical: 0.8.h),
-                  //   child: PhysicalModel(
-                  //     color: Colors.grey,
-                  //     elevation: 3,
-                  //     shadowColor: Colors.teal,
-                  //     child: Container(
-                  //       height: 14.h,
-                  //       decoration: BoxDecoration(
-                  //         //color: Colors.yellow,
-                  //         gradient: MyTheme.gradient4,
-                  //       ),
-                  //       child: CartProductCard(
-                  //           // controller: controller,
-                  //           // product:
-                  //           //     controller.products.keys.toList()[index],
-                  //           // quantity: controller.products.values
-                  //           //     .toList()[index],
-                  //           // index: index,
-                  //           ),
-                  //     ),
-                  //   ),
-                  // )),
-                  SizedBox(
-                    height: 0.2.h,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 2.w),
-                    child: Container(
-                      height: size.height * 0.16,
-                      decoration: BoxDecoration(
-                        color: Colors.white70,
-                        // color: Colors.lightGreen.shade200,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.w, vertical: 0.5.h),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Total Item',
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.teal),
-                                ),
-                                Container(
-                                  height: 4.h,
-                                  width: 8.w,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: MyTheme.gradient3,
-                                  ),
-                                  child: Center(
-                                    child: Text(controller.cartListModel!.totalItem.toString(),
-                                     // "${controller.cartListModel?.totalItem.toString()}",
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                          fontWeight:
-                                          FontWeight.w700),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 3.w, vertical: 1.h),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Total',
-                                  style: TextStyle(
-                                    color: Colors.teal,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(controller.cartListModel!.totalPrice.toString(),
-                                  //'₹${controller.cartListModel?.totalPrice}',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: Colors.red.shade400,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          ///todo: cuppon section start from here.....................................................................................................
-                          ///show applied coupan
-                          // Padding(
-                          //   padding: EdgeInsets.symmetric(
-                          //       horizontal: 2.w, vertical: 0.5.h),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       Text(ww),
-                          //       Text("100"),
-                          //      // get_coupan()
-                          //       // var coupan6 =  pref.getString('coupan_apply');
-                          //      //   Text(get_coupan().toString()),
-                          //       // Text("kljglkjgl")
-                          //     ]
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  ///coupan code
-                  ///
-                  Container(
-                    // height: 40,
-                    // width: 40,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(height: size.height*0.02,),
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child:
-                            Container(
-                                height: size.height*0.8,
-                                width: size.width*0.9,
-                                decoration: BoxDecoration(
-                                    color: Color(0xffddebdd),
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding:  EdgeInsets.only(top: size.height*0.02, left: size.width*0.02),
-                                      child: Text('Available Offers' , style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-                                    ),
-                                    Padding(
-                                      padding:  EdgeInsets.only(left: size.width*0.05 , ),
-                                      child: Divider(),
-                                    ),
-////demo
-                                    ///first list view builder
-                                    SizedBox(
-                                      height: size.height*0.13,
-                                      // height: size.height*0.37,
-                                      width: size.width,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          //itemCount: _coupanListController.getaboutthecoupan!.result.length,
-                                          itemCount: 3,
-                                          itemBuilder: (BuildContext context, int indexx) {
-                                            Size size = MediaQuery.of(context).size;
-                                            return Obx(
-                                                  () => (_coupanListController.isLoading.value)
-                                                  ?
-                                                  Center(child: CircularProgressIndicator())
-                                                  : Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Padding(
-                                                        padding:  EdgeInsets.only(top: size.height*0.01 , left: size.width*0.05),
-                                                        child: DottedBorder(
-                                                          dashPattern: [4, 2],
-                                                          strokeWidth: 1,
-                                                          child: Container(
-                                                            height: size.height*0.05,
-                                                            width: size.width*0.4,
-                                                            color: Color(0xfff7cec8),
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: <Widget>[
-                                                                /// uneditable text form field
-                                                                Padding(
-                                                                  padding:  EdgeInsets.only(left: size.width*0.01 , ),
-                                                                  child: Text(_coupanListController.getaboutthecoupan!.result[indexx].couponCode.toString(),
-                                                                    //'${_coupanListController.getaboutthecoupan?.result[indexx].couponCode.toString()}',
-                                                                    style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      ///I have to check this code
-                                                      Padding(
-                                                        padding:  EdgeInsets.only(right: size.width*0.01 , top: size.height*0.03),
-                                                        child:
-                                                        InkWell(
-                                                          onTap: ()async{
-                                                            if(controller.cartListModel!.totalPrice >= 2000){
-                                                              SharedPreferences pref =  await SharedPreferences.getInstance() ;
-                                                              pref.setString('coupan_apply', _coupanListController.getaboutthecoupan!.result[indexx].couponCode);
-                                                              var coupan1 =  pref.getString('coupan_apply');
-                                                              _coupanPostController.postcoupanApi();
-                                                            }else{
-                                                              Get.snackbar("Error", "Amount must be grater than 2000");
-                                                            }
-                                                          },
-                                                          child: Container(
-                                                            height: size.height*0.05,
-                                                            width: size.width*0.16,
-                                                            child: Center(child: Text('Apply' , style: TextStyle(
-                                                                fontWeight: FontWeight.bold ,
-                                                                color: Colors.green,
-                                                                fontSize: 15
-                                                            ),
-                                                            )),
-                                                          ),
-                                                        ) ,
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Padding(
-                                                    padding:  EdgeInsets.only( top: size.height*0.03 , left: size.width*0.04 ,),
-                                                    child: Text(_coupanListController.getaboutthecoupan!.result[indexx].name.toString(),
-                                                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.green),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }
-                                      ),
-                                    ),
-//SizedBox(height: size.height*0.02,),
-                                    ///Second coupan for new user
-                                    SizedBox(
-                                      height: size.height*0.2,
-                                      width: size.width,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: 1,
-                                          //itemCount: _coupanController.getcoupanproduct?.result?.length,
-                                          itemBuilder: (BuildContext context, int indexx){
-//_firstCoupanPostController
-                                            return Obx(
-                                                  () => (_coupanController.isLoading.value)
-                                                  ? Center(child: CircularProgressIndicator())
-                                                      : _coupanController.getcoupanproduct!.result!.isEmpty
-                                                      ? Center(
-                                                    child: Text('No data'),
-                                                  )
-                                                  : Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Padding(
-                                                        padding:  EdgeInsets.only(top: size.height*0.02 , left: size.width*0.05),
-                                                        child: DottedBorder(
-                                                          dashPattern: [4, 2],
-                                                          strokeWidth: 1,
-                                                          child: Container(
-                                                            height: size.height*0.05,
-                                                            width: size.width*0.4,
-                                                            // height: 40,
-                                                            // width: 160,
-                                                            color: Color(0xfff7cec8),
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: <Widget>[
-                                                                Padding(
-                                                                  padding:  EdgeInsets.only(left: size.width*0.01 , ),
-                                                                  child:
-                                                                  Text(_coupanController.getcoupanproduct!.result![indexx].coupon.toString(),
-                                                                    //'${_coupanController.getcoupanproduct?.result?[indexx].coupon.toString()}%',
-                                                                    style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
-                                                                ),
-                                                                Dash(
-                                                                  direction: Axis.vertical,
-                                                                  length: size.height*0.05,
-                                                                  // dashLength: 15,
-                                                                ),
-                                                                Padding(
-                                                                  padding:  EdgeInsets.only(right: size.width*0.02),
-                                                                  child: Text(_coupanController.getcoupanproduct!.result![indexx].couponCode.toString(),
-                                                                    //"${_coupanController.getcoupanproduct?.result?[indexx].couponCode.toString()}",
-                                                                    style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:  EdgeInsets.only(right: size.width*0.01 , top: size.height*0.03),
-                                                        //padding:  EdgeInsets.only(right: 10 , top: 30),
-                                                        child: InkWell(
-                                                          onTap: () async{
-                                                         //   print("njkfhnhieewf: ${_coupanController.getcoupanproduct!.result![indexx].couponCode.toString()}");
-                                                            SharedPreferences pref =  await SharedPreferences.getInstance() ;
-                                                            var coupan =  pref.setString('first_time_coupan',_coupanController.getcoupanproduct!.result![indexx].couponCode.toString());
-//_firstCoupanPostController
-                                                          //  var coupan =  pref.setString('first_time_coupan',"${_coupanController.getcoupanproduct?.result?[indexx].couponCode.toString()}");
-                                                            var coupanfirst =  pref.getString('first_time_coupan');
-                                                            // print("fdsgsdgsdgs: ${coupan.toString()}");
-                                                            print("ffsgfhsbf: ${coupanfirst}");
-                                                            _firstCoupanPostController.postcoupanApi();
-                                                            //_coupanPostController.Companycoupon.text;
-                                                          },
-                                                          child: Container(
-                                                            height: size.height*0.05,
-                                                            width: size.width*0.16,
-                                                            child:
-                                                            Center(child: Text('Apply' , style: TextStyle(
-                                                                fontWeight: FontWeight.bold ,
-                                                                color: Colors.green,
-                                                                fontSize: 15
-                                                            ),
-                                                            )),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Padding(
-                                                    padding:  EdgeInsets.only( top: size.height*0.02 ,left: size.width*0.04 ),
-                                                    // padding:  EdgeInsets.only(left: 10 , top: 10),
-                                                    child: Text(_coupanController.getcoupanproduct!.result![indexx].name.toString(),
-                                                    //  "${_coupanController.getcoupanproduct?.result?[indexx].name.toString()}",
-                                                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.green),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }
-                                      ),
-                                    ),
-                                    SizedBox(height: size.height*0.04,),
-                                    Padding(
-                                      padding:  EdgeInsets.only(left: size.width*0.01 , right: size.width*0.01),
-                                      child: DottedLine(
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:  EdgeInsets.only(top: 8 , left: 10 , bottom: 2),
-                                      child: Text('Got a coupan code? Enter it here' , style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15
-                                      ),),
-                                    ),
-                                    ///get shared prefrences
-                                    Padding(
-                                      padding:  EdgeInsets.all(10.0),
-                                      child: Container(
-                                        color: Colors.white,
-                                        child: TextFormField(
-                                          // initialValue: Text(box.read('key')).toString(),
-                                          controller: _coupanPostController.textfieldcoupon,
-                                          validator: (value) {
-                                            return _coupanPostController.validateCoupan(value!);
-                                          },
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10)
-                                              ),
-                                              labelText: 'Enter Coupan code'
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:  EdgeInsets.only(left: size.width*0.08, right: size.width*0.08 , top: size.height*0.01),
-                                      child: InkWell(
-                                        onTap: (){
-                                          _coupanPostController.checkcoupontextfield();
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          height: size.height * 0.065,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(12),
-                                              gradient: LinearGradient(
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                  colors: [Color(0xff3a923b),
-                                                    Color(0xffb5d047),]),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  offset: Offset(0, 0),
-                                                  spreadRadius: 1,
-                                                  blurRadius: 1,
-                                                  //color: darkShadow,
-                                                ),
-                                                BoxShadow(
-                                                  offset: Offset(-1, -1),
-                                                  spreadRadius: 1,
-                                                  blurRadius: 1,
-                                                ),
-                                              ]
-                                          ),
-                                          child: Center(
-                                            child: Text('APPLY', style: TextStyle(
-                                                fontSize: size.width * 0.049,
-                                                fontWeight: FontWeight.w800,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                            ),
-                          ),
-                        ],
-
-                      ),
-                    ),
-                  ),
-                  ///wrong code of confirm code
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1.h),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 3.w, vertical: 0.5.h),
-                      child: NeoPopButton(
-                        topShadowColor: Color(0xffb5d047),
-                        leftShadowColor: Color(0xffb5d047),
-                        color: Color(0xff3a923b),
-                        bottomShadowColor:
-                        ColorUtils.getVerticalShadow(
-                            Color(0xffb5d047))
-                            .toColor(),
-                        rightShadowColor:
-                        ColorUtils.getHorizontalShadow(
-                            Color(0xffb5d047))
-                            .toColor(),
-                        animationDuration:
-                        Duration(milliseconds: 200),
-                        depth: kButtonDepth,
-                        onTapUp: () {
-                           _addressListController.addresListApi();
-                           _addressListController.update();
-                          ///.....................................................................
-                          Get.to(() => AddressList());
+            ? Center(child: CircularProgressIndicator())
+            : controller.cartListModel?.result == null
+            ? Center(child: Text("You have no item in your Cart"))
+            : Container(
+          height: size.height,
+          width: size.width,
+          decoration: BoxDecoration(
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(9.0),
+                  child: Row(
+                    //mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.back();
                         },
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 1,
+                        child: Icon(
+                          Icons.arrow_back_ios_outlined,
+                          color: AppColors.themecolors,
                         ),
-                        child: Padding(
+                      ),
+                      SizedBox(
+                        width: size.width * 0.28,
+                      ),
+                      Text(
+                        'Cart Item',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.themecolors,
+                        ),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.28,
+                      ),
+                    ],
+                  ),
+                ),
+                ///test...................
+                Container(
+                  // height: size.height * 0.65,
+                  // color: Colors.green,
+                    child: CartProductCard()
+                  // GetBuilder<CartController>(
+                  //   builder: (controller) {
+                  //     return CartProductCard();
+                  //   },
+                  // ),
+                ),
+                /// original
+                // SizedBox(
+                //   height: size.height * 0.65,
+                //   child: GetBuilder<CartController>(
+                //     builder: (controller) {
+                //       return CartProductCard();
+                //     },
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(
+                //       horizontal: 2.w, vertical: 0.8.h),
+                //   child: PhysicalModel(
+                //     color: Colors.grey,
+                //     elevation: 3,
+                //     shadowColor: Colors.teal,
+                //     child: Container(
+                //       height: 14.h,
+                //       decoration: BoxDecoration(
+                //         //color: Colors.yellow,
+                //         gradient: MyTheme.gradient4,
+                //       ),
+                //       child: CartProductCard(
+                //           // controller: controller,
+                //           // product:
+                //           //     controller.products.keys.toList()[index],
+                //           // quantity: controller.products.values
+                //           //     .toList()[index],
+                //           // index: index,
+                //           ),
+                //     ),
+                //   ),
+                // )),
+                SizedBox(
+                  height: 0.2.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                  child: Container(
+                    height: size.height * 0.16,
+                    decoration: BoxDecoration(
+                      color: Colors.white70,
+                      // color: Colors.lightGreen.shade200,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
+                              horizontal: 2.w, vertical: 0.5.h),
                           child: Row(
                             mainAxisAlignment:
-                            MainAxisAlignment.center,
+                            MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("CONFIRM",
-                                  style: GoogleFonts.poppins(
-                                    // color: MyTheme.ThemeColors,
-                                    color: Colors.black,
-                                    fontSize: 13,
-                                    letterSpacing: 2,
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              Text(
+                                'Total Item',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.teal),
+                              ),
+                              Container(
+                                height: 4.h,
+                                width: 8.w,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: MyTheme.gradient3,
+                                ),
+                                child: Center(
+                                  child: Text(controller.cartListModel!.totalItem.toString(),
+                                    // "${controller.cartListModel?.totalItem.toString()}",
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight:
+                                        FontWeight.w700),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 3.w, vertical: 1.h),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Total',
+                                style: TextStyle(
+                                  color: Colors.teal,
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '₹${controller.cartListModel!.totalPrice.toString()}',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.red.shade400,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ///todo: cuppon section start from here.....................................................................................................
+                        ///show applied coupan
+                        // Obx(
+                        //       () =>
+                        //       (_checkoutController
+                        //       .isLoading.isFalse)
+                        //       ? Center(
+                        //       child:
+                        //       CircularProgressIndicator())
+                        //   //     : _checkoutController
+                        //   //     .getaddressbyid?.result == null
+                        //   //     ? Center(
+                        //   //   child: Text('No data'),
+                        //   // )
+                        //       :
+                              Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 2.w, vertical: 0.5.h),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("discounted amount",
+                                    style: TextStyle(
+                                      color: Colors.teal,
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.normal,
+                                    ),),
+
+                                  ///todo: from here checkout api...............................
+                                  Text(
+                                    '₹ ${_checkoutController.checkoutModel?.result?.totalCost.toString() ?? 0 }',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.red,
+                                      fontWeight:
+                                      FontWeight.bold,
+                                    ),
+                                  ),
+
+                                  // Text(
+                                  //   '${rahul.toString()}',
+                                  //   //'₹ ${_checkoutController.checkoutModel?.result?.totalCost.toString() ?? 0}',
+                                  //   style: TextStyle(
+                                  //     fontSize: 12,
+                                  //     color: Colors.red,
+                                  //     fontWeight:
+                                  //     FontWeight.normal,
+                                  //   ),
+                                  // ),
+                                ]
+                            ),
+                          ),
+
+                      ],
+                    ),
+                  ),
+                ),
+                ///coupan code
+                ///
+                Container(
+                  // height: 40,
+                  // width: 40,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: size.height*0.02,),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child:
+                          Container(
+                              height: size.height*0.6,
+                              width: size.width*0.9,
+                              decoration: BoxDecoration(
+                                  color: Color(0xffddebdd),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding:  EdgeInsets.only(top: size.height*0.02, left: size.width*0.02),
+                                    child: Text('Available Offers' , style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                                  ),
+                                  Padding(
+                                    padding:  EdgeInsets.only(left: size.width*0.05 , ),
+                                    child: Divider(),
+                                  ),
+////demo
+                                  ///first list view builder
+                                  SizedBox(
+                                    height: size.height*0.13,
+                                    // height: size.height*0.37,
+                                    width: size.width,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: 3,
+                                        // //_coupanListController.getaboutthecoupan!.result.length,
+                                        //itemCount: _coupanListController.getaboutthecoupan?.result.length,
+                                        itemBuilder: (BuildContext context, int indexx) {
+                                          Size size = MediaQuery.of(context).size;
+                                          return Obx(() => (_coupanListController.isLoading.value)
+                                              ?
+                                          Center(child: CircularProgressIndicator())
+                                              : Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding:  EdgeInsets.only(top: size.height*0.01 , left: size.width*0.05),
+                                                    child: DottedBorder(
+                                                      dashPattern: [4, 2],
+                                                      strokeWidth: 1,
+                                                      child: Container(
+                                                        height: size.height*0.05,
+                                                        width: size.width*0.4,
+                                                        color: Color(0xfff7cec8),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: <Widget>[
+                                                            /// uneditable text form field
+                                                            Padding(
+                                                              padding:  EdgeInsets.only(left: size.width*0.01 , ),
+                                                              child: Text(_coupanListController.getaboutthecoupan!.result[indexx].couponCode.toString(),
+                                                                //'${_coupanListController.getaboutthecoupan?.result[indexx].couponCode.toString()}',
+                                                                style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  ///I have to check this code
+                                                  Padding(
+                                                    padding:  EdgeInsets.only(right: size.width*0.01 , top: size.height*0.03),
+                                                    child:
+                                                    InkWell(
+                                                      onTap: ()async{
+                                                        if(controller.cartListModel!.totalPrice >= 2000){
+
+                                                         // _checkoutController.refresh();
+                                                          //CallLoader.hideLoader();
+                                                          SharedPreferences pref =  await SharedPreferences.getInstance() ;
+                                                          var prefs = GetStorage();
+                                                          pref.setString('coupan_apply', _coupanListController.getaboutthecoupan!.result[indexx].couponCode);
+                                                          //var coupan1 =  pref.getString('coupan_apply');
+                                                          var coupan1 =  pref.getString('coupan_apply');
+                                                          // print("fdsgsdgsdgs: ${coupan.toString()}");
+                                                          print("ffsgfhsbfytuifghjkprince: ${coupan1}");
+                                                          //CallLoader.loader();
+                                                          //CallLoader.loader();
+                                                          ///.........4april...........
+                                                          // controller.refresh();
+                                                          // _coupanPostController.postcoupanApi();
+                                                          // _coupanPostController.update();
+                                                          //
+                                                          // _checkoutController.getcheckoutApi();
+                                                          // _checkoutController.update();
+                                                          //
+                                                          // controller.CartListgApi();
+                                                          // controller.update();
+                                                          ///.......................
+                                                          _firstCoupanPostController.postcoupanApi();
+                                                          controller.CartListgApi();
+                                                          // CallLoader.hideLoader();
+                                                          controller.update();
+
+                                                         // CallLoader.hideLoader();
+                                                          ///
+                                                         //  Get.offAll(
+                                                         //        () => Cartproducts(), //next page class
+                                                         //    duration: Duration(
+                                                         //        milliseconds: 500), //duration of transitions, default 1 sec
+                                                         //    transition:
+                                                         //    // Transition.leftToRight //transition effect
+                                                         //    // Transition.fadeIn
+                                                         //    //Transition.size
+                                                         //    Transition.fade,
+                                                         //  );
+
+                                                          //controller.cartListModel!.totalPrice.toString();
+                                                        }else{
+                                                          Get.snackbar("Error", "Amount must be grater than 2000");
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        height: size.height*0.05,
+                                                        width: size.width*0.16,
+                                                        child: Center(child: Text('ApplyRR' , style: TextStyle(
+                                                            fontWeight: FontWeight.bold ,
+                                                            color: Colors.green,
+                                                            fontSize: 15
+                                                        ),
+                                                        )),
+                                                      ),
+                                                    ) ,
+                                                  )
+                                                ],
+                                              ),
+
+                                              Padding(
+                                                padding:  EdgeInsets.only( top: size.height*0.03 , left: size.width*0.04 ,),
+                                                child: Text(_coupanListController.getaboutthecoupan!.result[indexx].name.toString(),
+                                                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.green),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          );
+                                        }
+                                    ),
+                                  ),
+//SizedBox(height: size.height*0.02,),
+                                  ///Second coupan for new user
+                                  SizedBox(
+                                    height: size.height*0.12,
+                                    width: size.width,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: 1,
+                                        //itemCount: _coupanController.getcoupanproduct?.result?.length,
+                                        itemBuilder: (BuildContext context, int index){
+//_firstCoupanPostController
+                                          return Obx(
+                                                () => (_coupanController.isLoading.value)
+                                                ? Center(child: CircularProgressIndicator())
+                                                : _coupanController.getcoupanproduct!.result!.isEmpty
+                                                ? Center(
+                                              child: Text('No data'),
+                                            )
+                                                : Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Padding(
+                                                      padding:  EdgeInsets.only(top: size.height*0.02 , left: size.width*0.05),
+                                                      child: DottedBorder(
+                                                        dashPattern: [4, 2],
+                                                        strokeWidth: 1,
+                                                        child: Container(
+                                                          height: size.height*0.05,
+                                                          width: size.width*0.4,
+                                                          // height: 40,
+                                                          // width: 160,
+                                                          color: Color(0xfff7cec8),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: <Widget>[
+                                                              Padding(
+                                                                padding:  EdgeInsets.only(left: size.width*0.01 , ),
+                                                                child:
+                                                                Text(
+                                                                  _coupanController.getcoupanproduct!.result![index].coupon.toString(),
+                                                                  //'${_coupanController.getcoupanproduct?.result?[indexx].coupon.toString()}%',
+                                                                  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
+                                                              ),
+                                                              Dash(
+                                                                direction: Axis.vertical,
+                                                                length: size.height*0.05,
+                                                                // dashLength: 15,
+                                                              ),
+                                                              Padding(
+                                                                padding:  EdgeInsets.only(right: size.width*0.02),
+                                                                child: Text(_coupanController.getcoupanproduct!.result![index].couponCode.toString(),
+                                                                  //"${_coupanController.getcoupanproduct?.result?[indexx].couponCode.toString()}",
+                                                                  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:  EdgeInsets.only(right: size.width*0.01 , top: size.height*0.03),
+                                                      //padding:  EdgeInsets.only(right: 10 , top: 30),
+                                                      child: InkWell(
+                                                        onTap: () async{
+                                                          //   print("njkfhnhieewf: ${_coupanController.getcoupanproduct!.result![indexx].couponCode.toString()}");
+                                                          SharedPreferences pref =  await SharedPreferences.getInstance() ;
+                                                          var coupan =  pref.setString('first_time_coupan',_coupanController.getcoupanproduct!.result![index].couponCode.toString());
+//_firstCoupanPostController
+                                                          //  var coupan =  pref.setString('first_time_coupan',"${_coupanController.getcoupanproduct?.result?[indexx].couponCode.toString()}");
+                                                          var coupansecond =  pref.getString('first_time_coupan');
+                                                          // print("fdsgsdgsdgs: ${coupan.toString()}");
+                                                          print("ffsgfhsbf: ${coupansecond}");
+                                                          _firstCoupanPostController.postcoupanApi();
+                                                          controller.CartListgApi();
+                                                         // CallLoader.hideLoader();
+                                                          controller.update();
+
+                                                          //_coupanPostController.Companycoupon.text;
+                                                        },
+                                                        child: Container(
+                                                          height: size.height*0.05,
+                                                          width: size.width*0.16,
+                                                          child:
+                                                          Center(child: Text('Apply' , style: TextStyle(
+                                                              fontWeight: FontWeight.bold ,
+                                                              color: Colors.green,
+                                                              fontSize: 15
+                                                          ),
+                                                          )),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding:  EdgeInsets.only( top: size.height*0.02 ,left: size.width*0.04 ),
+                                                  // padding:  EdgeInsets.only(left: 10 , top: 10),
+                                                  child: Text(_coupanController.getcoupanproduct!.result![index].name.toString(),
+                                                    //  "${_coupanController.getcoupanproduct?.result?[indexx].name.toString()}",
+                                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.green),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                    ),
+                                  ),
+                                  SizedBox(height: size.height*0.05,),
+                                  Padding(
+                                    padding:  EdgeInsets.only(left: size.width*0.01 , right: size.width*0.01),
+                                    child: DottedLine(
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:  EdgeInsets.only(top: 8 , left: 10 , bottom: 2),
+                                    child: Text('Got a coupan code? Enter it here' , style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15
+                                    ),),
+                                  ),
+                                  ///get shared prefrences
+                                  Padding(
+                                    padding:  EdgeInsets.all(10.0),
+                                    child: Container(
+                                      color: Colors.white,
+                                      child: TextFormField(
+                                        // initialValue: Text(box.read('key')).toString(),
+                                        controller: _coupanPostController.textfieldcoupon,
+                                        validator: (value) {
+                                          return _coupanPostController.validateCoupan(value!);
+                                        },
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10)
+                                            ),
+                                            labelText: 'Enter Coupan code'
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:  EdgeInsets.only(left: size.width*0.08, right: size.width*0.08 , top: size.height*0.01),
+                                    child: InkWell(
+                                      onTap: (){
+                                        _coupanPostController.checkcoupontextfield();
+                                        _coupanPostController.update();
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: size.height * 0.065,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(12),
+                                            gradient: LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: [Color(0xff3a923b),
+                                                  Color(0xffb5d047),]),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                offset: Offset(0, 0),
+                                                spreadRadius: 1,
+                                                blurRadius: 1,
+                                                //color: darkShadow,
+                                              ),
+                                              BoxShadow(
+                                                offset: Offset(-1, -1),
+                                                spreadRadius: 1,
+                                                blurRadius: 1,
+                                              ),
+                                            ]
+                                        ),
+                                        child: Center(
+                                          child: Text('APPLY', style: TextStyle(
+                                            fontSize: size.width * 0.049,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                          ),
+                        ),
+                      ],
+
+                    ),
+                  ),
+                ),
+                ///wrong code of confirm code
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 01.h),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 3.w, vertical: 0.5.h),
+                    child: NeoPopButton(
+                      topShadowColor: Color(0xffb5d047),
+                      leftShadowColor: Color(0xffb5d047),
+                      color: Color(0xff3a923b),
+                      bottomShadowColor:
+                      ColorUtils.getVerticalShadow(
+                          Color(0xffb5d047))
+                          .toColor(),
+                      rightShadowColor:
+                      ColorUtils.getHorizontalShadow(
+                          Color(0xffb5d047))
+                          .toColor(),
+                      animationDuration:
+                      Duration(milliseconds: 200),
+                      depth: kButtonDepth,
+                      onTapUp: () {
+                        _addressListController.addresListApi();
+                        _addressListController.update();
+                        ///.....................................................................
+                        Get.to(() => AddressList());
+                      },
+                      border: Border.all(
+                        color: Colors.green,
+                        width: 1,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 15),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: [
+                            Text("CONFIRM",
+                                style: GoogleFonts.poppins(
+                                  // color: MyTheme.ThemeColors,
+                                  color: Colors.black,
+                                  fontSize: 13,
+                                  letterSpacing: 2,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 1.h,
+                ),
+              ],
             ),
-          )
+          ),
+        )
         ),
       ),
     );
@@ -1096,203 +1186,217 @@ class CartProductCard extends StatelessWidget {
     var base = 'https://api.gyros.farm/Images/';
     return Column(
       children: [
-          // controller.cartListModel?.result.length == 0 ? Center(child: Text("Your Cart is empty")) :
-          Container(
-         // height: size.height*0.3,
-           // height: size.height * 0.65,
+        // controller.cartListModel?.result.length == 0 ? Center(child: Text("Your Cart is empty")) :
+        Container(
+          // height: size.height*0.3,
+          // height: size.height * 0.65,
             child:
             ListView.builder(
                 itemCount: controller.cartListModel?.result.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return Obx(
-                    () => (controller.isLoading.value)
+                        () => (controller.isLoading.value)
                         ? Center(child: CircularProgressIndicator())
-                        // : controller.cartListModel?.result== null
-                        //     ? Center(
-                        //         child: Text('No List'),
-                        //       )
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
+                    // : controller.cartListModel?.result== null
+                    //     ? Center(
+                    //         child: Text('No List'),
+                    //       )
+                        : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xff3a923b),
+                                Color(0xffb5d047),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              PhysicalModel(
+                                shadowColor: Colors.green,
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(5),
+                                elevation: 10,
                                 child: Container(
+                                  height: size.height * 0.13,
+                                  width: size.width * 0.30,
                                   decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: <Color>[
-                                          Color(0xff3a923b),
-                                          Color(0xffb5d047),
-                                        ],
+                                    gradient: MyTheme.gradient3,
+                                    borderRadius:
+                                    BorderRadius.circular(5),
+                                    // image: DecorationImage(
+                                    //     image: NetworkImage(
+                                    //       base + '${controller.cartListModel?.result[index].image.toString()}',
+                                    //     ),
+                                    //     fit: BoxFit.cover),
+                                  ),
+                                  child: CachedNetworkImage(
+                                    imageUrl: base + "${controller.cartListModel?.result[index].image.toString()}",fit: BoxFit.cover,
+                                    placeholder: (context, url) => SizedBox(
+                                        height: size.height * 0.40,
+                                        width:size.width,
+                                        //width: 4.w,
+                                        child: Center(
+                                          child: Image.asset("lib/assets/asset/zif_loading6.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                          //CircularProgressIndicator()
+                                        )
+                                    ),
+                                    errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: size.width * 0.55,
+                                      height: size.height * 0.1,
+                                      child: Text("${controller.cartListModel?.result[index].productName.toString()}",
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        style: GoogleFonts.anekBangla(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 10.sp,
+                                        ),
                                       ),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 5),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                    ),
+                                    SizedBox(
+                                      height: size.height * 0.02,
+                                    ),
+                                    Row(
                                       children: [
-                                        PhysicalModel(
-                                          shadowColor: Colors.green,
-                                          color: Colors.green,
-                                          borderRadius: BorderRadius.circular(5),
-                                          elevation: 10,
-                                          child: Container(
-                                            height: size.height * 0.13,
-                                            width: size.width * 0.30,
-                                            decoration: BoxDecoration(
-                                              gradient: MyTheme.gradient3,
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    base + '${controller.cartListModel?.result[index].image.toString()}',
-                                                  ),
-                                                  fit: BoxFit.cover),
-                                            ),
+                                        Text("₹${controller.cartListModel?.result[index].price.toString()}",
+                                          style:  TextStyle(
+                                            decoration: TextDecoration.lineThrough,
+                                            decorationStyle: TextDecorationStyle
+                                                .solid,
+                                            decorationColor: Colors
+                                                .red
+                                                .shade700,
+                                            decorationThickness:
+                                            1.2,
+                                            fontWeight:
+                                            FontWeight
+                                                .w600,
+                                            fontSize:
+                                            8.sp,
+                                            color: Colors.black,
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: size.width * 0.55,
-                                                height: size.height * 0.1,
-                                                child: Text("${controller.cartListModel?.result[index].productName.toString()}",
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 3,
-                                                  style: GoogleFonts.anekBangla(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 11.sp,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: size.height * 0.02,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text("₹${controller.cartListModel?.result[index].price.toString()}",
-                                                  style:  TextStyle(
-                                                    decoration: TextDecoration.lineThrough,
-                                                      decorationStyle: TextDecorationStyle
-                                                          .solid,
-                                                      decorationColor: Colors
-                                                          .red
-                                                          .shade700,
-                                                      decorationThickness:
-                                                      1.2,
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w600,
-                                                      fontSize:
-                                                      8.sp,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: size.width*0.02,),
-                                                  Text(
-                                                    "₹${controller.cartListModel?.result[index].finalAmount.toString()
-                                                    //product.price.toString()
-                                                    }",
-                                                    style: GoogleFonts.anekBangla(
-                                                      fontSize: 10.sp,
-                                                      letterSpacing: 1,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          height: size.height * 0.045,
-                                          width: size.height * 0.14,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Row(
-                                            //mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Expanded(
-                                                child: NeoPopButton(
-                                                  color: Colors.grey,
-                                                  bottomShadowColor: Colors.black12,
-                                                  //buttonPosition: Position.fullBottom,
-                                                  depth: 2,
-                                                  onTapUp: () {
-                                                    controller.minuscartApi(
-                                                        controller.cartListModel?.result[index].id.toString());
-                                                  },
-                                                  border: Border.all(
-                                                    color: Colors.black12,
-                                                    width: 2,
-                                                  ),
-                                                  child: const Center(
-                                                    child: Icon(
-                                                      Icons.remove_circle_outline,
-                                                      size: 18,
-                                                      color: Colors.redAccent,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 0.9.w),
-                                                child: PhysicalModel(
-                                                  elevation: 4,
-                                                  color: Colors.white,
-                                                  shadowColor: Colors.green,
-                                                  shape: BoxShape.circle,
-                                                  child: Container(
-                                                    height: 4.h,
-                                                    width: 8.w,
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: Colors.white),
-                                                    child: Center(
-                                                      child: Text("${controller.cartListModel?.result[index].count}",
-                                                        style: GoogleFonts.anekBangla(color: Colors.black,fontSize: 11.sp,fontWeight: FontWeight.bold),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: NeoPopButton(
-                                                  color: Colors.grey,
-                                                  bottomShadowColor: Colors.green,
-                                                  rightShadowColor: Colors.green,
-                                                  depth: 2,
-                                                  onTapUp: () {controller.pluscartApi(controller.cartListModel?.result[index].id.toString());
-                                                  },
-                                                  border: Border.all(
-                                                    color: Colors.green,
-                                                    width: 2,
-                                                  ),
-                                                  child: const Center(
-                                                    child: Icon(
-                                                        Icons.add_circle_outline_sharp,
-                                                        size: 18,
-                                                        color: Colors.greenAccent),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                        SizedBox(width: size.width*0.02,),
+                                        Text(
+                                          "₹${controller.cartListModel?.result[index].finalAmount.toString()
+                                          //product.price.toString()
+                                          }",
+                                          style: GoogleFonts.anekBangla(
+                                            fontSize: 9.sp,
+                                            letterSpacing: 1,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
+                              Container(
+                                height: size.height * 0.045,
+                                width: size.height * 0.14,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  //mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Expanded(
+                                      child: NeoPopButton(
+                                        color: Colors.grey,
+                                        bottomShadowColor: Colors.black12,
+                                        //buttonPosition: Position.fullBottom,
+                                        depth: 2,
+                                        onTapUp: () {
+                                          controller.minuscartApi(
+                                              controller.cartListModel?.result[index].id.toString());
+                                        },
+                                        border: Border.all(
+                                          color: Colors.black12,
+                                          width: 2,
+                                        ),
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.remove_circle_outline,
+                                            size: 18,
+                                            color: Colors.redAccent,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 0.9.w),
+                                      child: PhysicalModel(
+                                        elevation: 4,
+                                        color: Colors.white,
+                                        shadowColor: Colors.green,
+                                        shape: BoxShape.circle,
+                                        child: Container(
+                                          height: 4.h,
+                                          width: 8.w,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white),
+                                          child: Center(
+                                            child: Text("${controller.cartListModel?.result[index].count}",
+                                              style: GoogleFonts.anekBangla(color: Colors.black,fontSize: 11.sp,fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: NeoPopButton(
+                                        color: Colors.grey,
+                                        bottomShadowColor: Colors.green,
+                                        rightShadowColor: Colors.green,
+                                        depth: 2,
+                                        onTapUp: () {
+                                          controller.pluscartApi(controller.cartListModel?.result[index].id.toString());
+                                        },
+                                        border: Border.all(
+                                          color: Colors.green,
+                                          width: 2,
+                                        ),
+                                        child: const Center(
+                                          child: Icon(
+                                              Icons.add_circle_outline_sharp,
+                                              size: 18,
+                                              color: Colors.greenAccent),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   );
                 })),
         ///coupan code

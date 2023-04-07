@@ -45,29 +45,33 @@ class ApiProviders {
 
   // static postReview(
   //     var name,
-  //     var email,
-  //     var title,
-  //     var description,
   //     var mobile,
+  //     var email,
+  //     var description,
+  //     var title,
   //     var rating1,
   //     var rating2,
   //     var rating3,
   //     var rating4,
   //     var rating5,
-  //     var imagePath
+  //     var imagePath,
+  //     var imagebase,
+  //
   //     )async {
   //   var headers = {
-  //     'productid': '98',
   //     'Name': '$name',
+  //     'Mobile': '$mobile',
   //     'Email': '$email',
   //     'Description': '$description',
-  //     'Mobile': '$mobile',
   //     'Title': '$title',
   //     'Rating1': '$rating1',
   //     'Rating2': '$rating2',
   //     'Rating3': '$rating3',
   //     'Rating4': '$rating4',
-  //     'Rating5': '$rating5'
+  //     'Rating5': '$rating5',
+  //     'imagePath': '$imagePath',
+  //     'imagebase': '$imagebase'
+  //
   //   };
   //
   //   print(name);
@@ -82,7 +86,7 @@ class ApiProviders {
   //   print(rating5);
   //   print(imagePath);
   //   try {
-  //     var url = baseUrl + '/api/FileUpload/Upload';
+  //     var url = baseUrl + '/api/AdminApi/AddReview';
   //     var request = http.MultipartRequest('POST', Uri.parse(url));
   //     request.files.add(await http.MultipartFile.fromPath('image', imagePath));
   //     request.headers.addAll(headers);
@@ -102,72 +106,8 @@ class ApiProviders {
   //     print('Error');
   //     print(e.toString());
   //   }
+  //
+  //
   // }
-
-  static postReview(
-      var name,
-      var mobile,
-      var email,
-      var description,
-      var title,
-      var rating1,
-      var rating2,
-      var rating3,
-      var rating4,
-      var rating5,
-      var imagePath,
-      var imagebase,
-
-      )async {
-    var headers = {
-      'Name': '$name',
-      'Mobile': '$mobile',
-      'Email': '$email',
-      'Description': '$description',
-      'Title': '$title',
-      'Rating1': '$rating1',
-      'Rating2': '$rating2',
-      'Rating3': '$rating3',
-      'Rating4': '$rating4',
-      'Rating5': '$rating5',
-      'imagePath': '$imagePath',
-      'imagebase': '$imagebase'
-
-    };
-
-    print(name);
-    print(email);
-    print(title);
-    print(description);
-    print(mobile);
-    print(rating1);
-    print(rating2);
-    print(rating3);
-    print(rating4);
-    print(rating5);
-    print(imagePath);
-    try {
-      var url = baseUrl + '/api/AdminApi/AddReview';
-      var request = http.MultipartRequest('POST', Uri.parse(url));
-      request.files.add(await http.MultipartFile.fromPath('image', imagePath));
-      request.headers.addAll(headers);
-      http.StreamedResponse response = await request.send();
-      http.Response r = await http.Response.fromStream(response);
-      print(r.statusCode);
-      print(r.body);
-      if (r.statusCode == 200) {
-        return r;
-
-      } else {
-        CallLoader.hideLoader();
-        Get.snackbar('Error', r.body);
-        return r;
-      }
-    } catch (e) {
-      print('Error');
-      print(e.toString());
-    }
-  }
-
 
  }

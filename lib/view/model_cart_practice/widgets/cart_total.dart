@@ -7,13 +7,16 @@ import 'package:gyros_app/controllers/address_list_controller/address_list_contr
 import 'package:gyros_app/controllers/check_out_controller/check_out_controlles.dart';
 import 'package:gyros_app/controllers/get_profile/get_profile_controller.dart';
 import 'package:gyros_app/controllers/post_order_controller/post_order_controller.dart';
+import 'package:gyros_app/controllers/wallet_rozar_pay/wallet_post_controller.dart';
 import 'package:gyros_app/view/custom_widgets/my_theme.dart';
 import 'package:gyros_app/view/home_page/home_page_controller.dart';
 import 'package:gyros_app/view/model_cart_practice/controllers/cart_controllersss.dart';
 import 'package:gyros_app/view/order_confirmation_screens/order_confirmation.dart';
+import 'package:gyros_app/view/wallet.dart';
 import 'package:neopop/utils/color_utils.dart';
 import 'package:neopop/utils/constants.dart';
 import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../controllers/rozar_pay_controller/rozar_pay_controller.dart';
@@ -33,6 +36,8 @@ class TotalPrice extends StatelessWidget {
   HomePageController _homePageController = Get.find();
   GetProfileController _getProfileController = Get.put(GetProfileController());
   PostOrderController _postOrderController = Get.put(PostOrderController());
+  WalletPostController _walletPostController = Get.put(WalletPostController());
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -73,9 +78,7 @@ class TotalPrice extends StatelessWidget {
             height: size.height * 0.25,
             width: size.width * 0.9,
             child: ListView.builder(
-                itemCount:
-                    //1,
-                    _checkoutController.getaddressbyid!.result!.length,
+                itemCount: _checkoutController.getaddressbyid!.result!.length,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   return Obx(
@@ -369,6 +372,7 @@ class TotalPrice extends StatelessWidget {
                             style: GoogleFonts.alegreyaSc(
                                 fontSize: 11.sp, fontWeight: FontWeight.w700),
                           ),
+
                           Text(
                             'Discount:',
                             style: GoogleFonts.alegreyaSc(
@@ -454,7 +458,11 @@ class TotalPrice extends StatelessWidget {
                         ColorUtils.getHorizontalShadow(Colors.green).toColor(),
                     animationDuration: const Duration(milliseconds: 200),
                     depth: kButtonDepth,
-                    onTapUp: () {
+                    onTapUp: () async{
+                      SharedPreferences p = await SharedPreferences.getInstance();
+                      p.setString("rrrrrrrrrr4567", "${_checkoutController.checkoutModel?.result?.totalCost.toString()}");
+                     var  v=p.getString("rrrrrrrrrr4567");
+                     print("object3####################:${v}");
                       Get.bottomSheet(
                           Container(
                           //  height: 180,
@@ -483,15 +491,62 @@ class TotalPrice extends StatelessWidget {
                               ),
                               new InkWell(
                                 onTap: () {
+
                                 },
-                                child: new Container(
-                                  height: 50.0,
-                                  decoration: new BoxDecoration(
-                                    color: Colors.red,
-                                    border: new Border.all(color: Colors.white, width: 2.0),
-                                    borderRadius: new BorderRadius.circular(10.0),
+
+                                child: InkWell(
+                                  onTap: (){
+                                    _postOrderController.postOrderApi().then((statusCode) {
+                                      if (statusCode == 200) {
+                                        ///This is the main thing to provide updated list history...
+                                        _getProfileController.OrderHistoryApi();
+                                        _getProfileController.update();
+                                        ///nov 14....................................
+                                        //Get.to(OrderConfirmationPage());
+                                      } else {
+                                        Get.snackbar("Error123", "");
+                                      }
+                                    });
+                                    _walletPostController.walletPostUpdateApi().then((statusCode) {
+                                      if (statusCode == 200) {
+                                        ///This is the main thing to provide updated list history...
+                                        _getProfileController.OrderHistoryApi();
+                                        _getProfileController.update();
+                                        Get.offAll(
+                                              () => OrderConfirmationPage(), //next page class
+                                          duration: Duration(
+                                              milliseconds: 300), //duration of transitions, default 1 sec
+                                          transition:
+
+                                          Transition.zoom,
+                                        );
+                                        ///nov 14....................................
+                                        //Get.to(OrderConfirmationPage());
+                                      } else if (statusCode == 400) {
+                                        Get.to(
+                                              () => Wallet(), //next page class
+                                          duration: Duration(
+                                              milliseconds: 500), //duration of transitions, default 1 sec
+                                          transition:
+
+                                          Transition.zoom,
+                                        );
+                                      }
+                                      else {
+                                        Get.snackbar("Error12378", "");
+                                      }
+                                    });
+
+                                  },
+                                  child: new Container(
+                                    height: 50.0,
+                                    decoration: new BoxDecoration(
+                                      color: Colors.red,
+                                      border: new Border.all(color: Colors.white, width: 2.0),
+                                      borderRadius: new BorderRadius.circular(10.0),
+                                    ),
+                                    child: new Center(child: new Text('Pay via Wallet', style: new TextStyle(fontSize: 18.0, color: Colors.white),),),
                                   ),
-                                  child: new Center(child: new Text('Pay via Wallet', style: new TextStyle(fontSize: 18.0, color: Colors.white),),),
                                 ),
                               ),
                               ///Todo: COD method for order...........................................................cod...................
@@ -502,11 +557,10 @@ class TotalPrice extends StatelessWidget {
                                         ///This is the main thing to provide updated list history...
                                         _getProfileController.OrderHistoryApi();
                                         _getProfileController.update();
-
                                         ///nov 14....................................
                                         Get.to(OrderConfirmationPage());
                                       } else {
-                                        Get.snackbar("Error", "");
+                                        Get.snackbar("Error123", "");
                                       }
                                     });
 

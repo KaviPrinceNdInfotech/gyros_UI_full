@@ -1,11 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:gyros_app/constants/app_colors.dart';
 import 'package:gyros_app/controllers/best_seller_controller.dart';
+import 'package:gyros_app/controllers/new_detail_controller.dart';
 import 'package:gyros_app/view/botttom_nav_bar/bottom_nav_bar_controller.dart';
 import 'package:gyros_app/view/botttom_nav_bar/bottom_navbar.dart';
+import 'package:gyros_app/view/home_page/home_page_controller.dart';
 import 'package:gyros_app/view/model_cart_practice/controllers/cart_controllersss.dart';
 import 'package:sizer/sizer.dart';
 
@@ -21,6 +24,8 @@ class BestDeal extends StatelessWidget {
   final CartController cartController = Get.put(CartController());
   FlashProductByIdController _flashProductByIdController =
       Get.put(FlashProductByIdController());
+  NewController _newProductByIdController = Get.put(NewController());
+  HomePageController _homePageController = Get.put(HomePageController());
 
   ///rahul old api api best deal oldd
 
@@ -238,18 +243,39 @@ class BestDeal extends StatelessWidget {
                                           elevation: 10,
                                           child: InkWell(
                                             onTap: () {
-                                              _flashProductByIdController
-                                                      .productid =
-                                                  _bestSellerController
-                                                      .bestsellermodel!
-                                                      .result![index]
+                                              ///from here call new detail page of  5 april 2023...prince
+
+                                              _newProductByIdController
+                                                  .productid =
+                                                  _homePageController
+                                                      .getflashsellproduct!
+                                                      .result[
+                                                  index]
                                                       .id
                                                       .toString();
-                                              _flashProductByIdController
-                                                  .flashproductbyIdApi();
+                                              _newProductByIdController
+                                                  .newproductbyIdApi();
+                                              ///from here call new detail page of  5 april 2023...prince...end....
+
+
+                                              ///
+
+                                              ///todo: here from here we have old code of flesh sell deal detail code changed 5 april 2023...........start
+                                              // _flashProductByIdController
+                                              //         .productid =
+                                              //     _bestSellerController
+                                              //         .bestsellermodel!
+                                              //         .result![index]
+                                              //         .id
+                                              //         .toString();
+                                              // _flashProductByIdController
+                                              //     .flashproductbyIdApi();
+
+                                              ///todo: here from here we have old code of flesh sell deal detail code changed 5 april 2023.........end
                                             },
                                             child: Container(
                                               height: size.height * 0.38,
+                                              width: double.infinity,
                                               //color: Colors.red,
                                               decoration: BoxDecoration(
                                                 borderRadius:
@@ -259,6 +285,19 @@ class BestDeal extends StatelessWidget {
                                                     image: NetworkImage(base +
                                                         '${_bestSellerController.bestsellermodel!.result![index].productImage.toString()}'),
                                                     fit: BoxFit.fitHeight),
+                                              ),
+                                              child: CachedNetworkImage(
+                                                imageUrl: base + "${_bestSellerController.bestsellermodel!.result![index].productImage.toString()}",fit: BoxFit.fitHeight,
+                                                placeholder: (context, url) => SizedBox(
+                                                    height: size.height * 0.38,
+                                                    width:size.width*99.22,
+                                                    //width: 4.w,
+                                                    child: Center(
+                                                      child: Image.asset("lib/assets/asset/zif_loading6.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                                      //CircularProgressIndicator()
+                                                    )
+                                                ),
+                                                errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                                               ),
                                             ),
                                           ),
@@ -287,14 +326,27 @@ class BestDeal extends StatelessWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    '${_bestSellerController.bestsellermodel!.result![index].quentity.toString()} gm',
-                                                    style: TextStyle(
-                                                      fontWeight:
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        '${_bestSellerController.bestsellermodel!.result[index].weight1.toString()}',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 10.sp,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        '${_bestSellerController.bestsellermodel!.result[index].pkt1.toString()}',
+                                                        style: TextStyle(
+                                                          fontWeight:
                                                           FontWeight.w700,
-                                                      fontSize: 10.sp,
-                                                      color: Colors.white,
-                                                    ),
+                                                          fontSize: 10.sp,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                   SizedBox(
                                                     height: size.height * 0.007,
@@ -600,7 +652,7 @@ class BestDeal extends StatelessWidget {
                                                           ),
                                                         ),
                                                         SizedBox(width: size.width*0.04,),
-                                                        Text('${_bestSellerController.bestsellermodel!.result[index].review.toDouble()}',
+                                                        Text('${_bestSellerController.bestsellermodel!.result[index].rating.toDouble()}',
                                                           style:
                                                           TextStyle(
                                                             fontWeight:

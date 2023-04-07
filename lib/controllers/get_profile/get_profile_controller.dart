@@ -38,9 +38,11 @@ class GetProfileController extends GetxController {
 
   @override
   void onInit() {
+
     super.onInit();
     addressidApi();
     OrderHistoryApi();
+
   }
 
   @override

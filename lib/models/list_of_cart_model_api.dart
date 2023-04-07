@@ -148,7 +148,7 @@ class Result {
     required this.productName,
     required this.categoryName,
     required this.image,
-    required this.weight,
+   // required this.weight,
     required this.matrix,
     required this.qty,
     required this.userId,
@@ -162,7 +162,7 @@ class Result {
   String productName;
   String categoryName;
   String image;
-  String weight;
+ // String weight;
   String matrix;
   String qty;
   int userId;
@@ -176,7 +176,7 @@ class Result {
     productName: json["ProductName"],
     categoryName: json["CategoryName"],
     image: json["Image"],
-    weight: json["Weight"],
+   // weight: json["Weight"],
     matrix: json["Matrix"],
     qty: json["Qty"],
     userId: json["UserId"],
@@ -191,7 +191,7 @@ class Result {
     "ProductName": productName,
     "CategoryName": categoryName,
     "Image": image,
-    "Weight": weight,
+   // "Weight": weight,
     "Matrix": matrix,
     "Qty": qty,
     "UserId": userId,

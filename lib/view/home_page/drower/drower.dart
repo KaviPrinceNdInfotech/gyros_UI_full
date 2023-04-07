@@ -82,18 +82,17 @@ class MainDrawer extends StatelessWidget {
                 'Shop',
                 style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
               ),
-              tileColor: Get.currentRoute == '/AllProducts'
-                  ? Colors.grey[300]
-                  : Colors.transparent,
+              // tileColor: Get.currentRoute == '/AllProducts'
+              //     ? Colors.grey[300]
+              //     : Colors.transparent,
               onTap: () {
                 print(Get.currentRoute);
                 Get.back();
-
                 _navController.tabindex(1);
                 Get.to(() => NavBar());
 
                 //Get.to(() => AllProducts());
-                Get.offNamed('/AllProducts');
+                Get.offNamed('/NavBar');
               },
             ),
             ListTile(

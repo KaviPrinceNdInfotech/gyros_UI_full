@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:gyros_app/view/model_cart_practice/controllers/cart_controllersss.dart';
 import 'package:gyros_app/widgets/circular_loader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rating_dialog/rating_dialog.dart';
@@ -12,7 +14,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../constants/app_colors.dart';
 import '../../../../controllers/about_the_product/about_the_product_controller.dart';
-import '../../../../controllers/cart_controllers.dart';
+
 import '../../../../controllers/flash_sale_product_by_id_controllers/flash_product_by_id_controller.dart';
 import '../../../../controllers/new_add_to_cart_controller.dart';
 import '../../../../controllers/new_detail_controller.dart';
@@ -27,9 +29,12 @@ import '../cart_product2.dart';
 import '../gradient_button.dart';
 
 class ItemDetailsss extends StatelessWidget {
-  ItemDetailsss({Key? key}) : super(key: key);
+  ItemDetailsss({Key? key,required this.productId}) : super(key: key);
+  final String productId;
   RxInt selectedimg = 0.obs;
   RxInt selectedsingleimg = 0.obs;
+  CartController carttcontroller = Get.put(CartController());
+
 
   // final CartController controller = Get.put(CartController());
   final RozarPayController _rozarPayController = Get.find();
@@ -51,7 +56,6 @@ final List<String> richa = [
     //   textHolder = '260';
     //
     // });
-
     print('260');
   }
   // final CartController controller = Get.put(CartController());
@@ -73,6 +77,7 @@ final List<String> richa = [
   TextEditingController price = TextEditingController();
   TextEditingController finalprice = TextEditingController();
   TextEditingController discount = TextEditingController();
+
   var pkt;
   var qty;
   String text = "No Value Entered";
@@ -84,6 +89,7 @@ final List<String> richa = [
     'https://api.gyros.farm/Images/coco 15L.jpg'
   ];
   //finalprice
+
   @override
   Widget build(BuildContext context) {
     print(
@@ -91,6 +97,11 @@ final List<String> richa = [
     Size size = MediaQuery.of(context).size;
     RxBool unfold = true.obs;
     var base = 'https://api.gyros.farm/Images/';
+    _controller.productId = "${
+      _newProductByIdController.newModelid!.productModelApi.id
+    }";
+    print("PRODUCT ID ${_newProductByIdController
+        .newModelid!.productModelApi.id}");
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -108,7 +119,9 @@ final List<String> richa = [
               padding: EdgeInsets.symmetric(horizontal: 3.w),
               child: InkWell(
                   onTap: () {
-                    Get.to(() => Cartproducts());
+                    carttcontroller.CartListgApi();
+                    carttcontroller.update();
+                    Get.off(() => Cartproducts());
                     //Get.to(() => ShopingBagsEmpty());
                   },
                   child: Padding(
@@ -142,22 +155,43 @@ final List<String> richa = [
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  ///Large image
+                  ///Large image,
+                  SizedBox(
+                    height: size.height*0.00,
+                  ),
                   Obx(
                         () => Container(
                       height: size.height * 0.40,
+                      width: size.width,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(base +
-                                _newProductByIdController.newModelid!
-                                    .productModelApi.multipleImage[
-                                _newProductByIdController
-                                    .selectedimg.value])),
+                        // image: DecorationImage(
+                        //     image: NetworkImage(base +
+                        //         _newProductByIdController.newModelid!
+                        //             .productModelApi.multipleImage[
+                        //         _newProductByIdController
+                        //             .selectedimg.value])
+                        // ),
                         color: Colors.white,
                         borderRadius: BorderRadius.all(
-                          Radius.circular(4.w),
+                          Radius.circular(0.w),
                         ),
                       ),
+                          child: CachedNetworkImage(
+                            imageUrl: base + "${_newProductByIdController.newModelid!
+                                .productModelApi.multipleImage[
+                            _newProductByIdController
+                                .selectedimg.value].toString()}",fit: BoxFit.fitHeight,
+                            placeholder: (context, url) => SizedBox(
+                                height: size.height * 0.40,
+                                width:size.width,
+                                //width: 4.w,
+                                child: Center(
+                                  child: Image.asset("lib/assets/asset/zif_loading6.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                  //CircularProgressIndicator()
+                                )
+                            ),
+                            errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
+                          ),
                     ),
                   ),
                   SizedBox(
@@ -217,7 +251,7 @@ final List<String> richa = [
 
 
                   SizedBox(
-                    height: 16.h,
+                    height: 14.h,
                     // height: 16.h,
                     width: size.width,
                     child: ListView.builder(
@@ -233,20 +267,43 @@ final List<String> richa = [
                                   _newProductByIdController
                                       .selectedimg.value = index;
                                 },
-                                child: Container(
-                                  height: 16.h,
-                                  width: 30.w,
-                                  // height: 16.h,
-                                  // width: 30.w,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(base +
-                                              _newProductByIdController
-                                                  .newModelid!
-                                                  .productModelApi
-                                                  .multipleImage[
-                                              index]))),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: size.width*0.004),
+                                  child: Container(
+                                    height: 16.h,
+                                    width: 30.w,
+                                    // height: 16.h,
+                                    // width: 30.w,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey.shade300,width: size.width*0.002),
+
+                                        // image: DecorationImage(
+                                        //     fit: BoxFit.cover,
+                                        //     image: NetworkImage(base +
+                                        //         _newProductByIdController
+                                        //             .newModelid!
+                                        //             .productModelApi
+                                        //             .multipleImage[
+                                        //         index]))
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: base + "${_newProductByIdController
+                                          .newModelid!
+                                          .productModelApi
+                                          .multipleImage[
+                                      index].toString()}",fit: BoxFit.fill,
+                                      placeholder: (context, url) => SizedBox(
+                                          height: size.height * 0.16,
+                                          width:size.width,
+                                          //width: 4.w,
+                                          child: Center(
+                                            child: Image.asset("lib/assets/asset/zif_loading.gif",fit: BoxFit.fitHeight,height: size.height*0.17,),
+                                            //CircularProgressIndicator()
+                                          )
+                                      ),
+                                      errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
+                                    ),
+                                  ),
                                 ),
                               );
 
@@ -365,7 +422,11 @@ final List<String> richa = [
                                 _newProductByIdController
                                     .selectedPrice.value]
                                     .discountPercentage
-                                    .toString(),
+                                    .toString(),style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: size.width*0.04,
+                                color: Colors.red
+                              ),
                                 // textAlign: TextAlign. center,
                               ),
                             ),
@@ -407,7 +468,7 @@ final List<String> richa = [
                         // ),
                         Container(
                           height: size.height * 0.05,
-                          width: size.width * 0.2,
+                          width: size.width * 0.15,
                           // color: Colors.red,
                           child: Text(
                             "₹${_newProductByIdController.newModelid!.productModelApi.packetSizemodel[_newProductByIdController.selectedPrice.value].price}",
@@ -449,12 +510,14 @@ final List<String> richa = [
                           // color: Colors.red,
                           child: Text(
                             "₹${_newProductByIdController.newModelid!.productModelApi.packetSizemodel[_newProductByIdController.selectedPrice.value].finalPrice}",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold,
+                            color: Colors.indigo.shade700,
+                            fontSize: size.width*0.04),
                             textAlign: TextAlign.center,
                           ),
                         ),
                         SizedBox(
-                          width: size.width * 0.2,
+                          width: size.width * 0.27,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -527,8 +590,8 @@ final List<String> richa = [
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: EdgeInsets.only(
-                                  left: size.width * 0.01,
-                                  right: size.width * 0.01),
+                                  left: size.width * 0.005,
+                                  right: size.width * 0.005),
                               child: InkWell(
                                 onTap: () {
                                   _newProductByIdController
@@ -538,7 +601,7 @@ final List<String> richa = [
                                   // height: size.height * 0.04,
                                   // width: size.width * 0.26,
                                     height: size.height * 0.04,
-                                    width: size.width * 0.18,
+                                    width: size.width * 0.19,
                                     decoration: BoxDecoration(
                                       // color: Colors.blue,
                                       gradient: LinearGradient(
@@ -572,14 +635,17 @@ final List<String> richa = [
                                     //     ),
                                     //   ),
                                     // ),
-                                    Center(
-                                      child: Text(
-                                        '${_newProductByIdController.newModelid!.productModelApi.packetSizemodel[index].qty.toString()}${_newProductByIdController.newModelid!.productModelApi.packetSizemodel[index].pkt.toString()}',
-                                        style: TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          fontSize: 7,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
+                                    Padding(
+                                      padding:  EdgeInsets.all(3.0),
+                                      child: Center(
+                                        child: Text(
+                                          '${_newProductByIdController.newModelid!.productModelApi.packetSizemodel[index].qty.toString()}${_newProductByIdController.newModelid!.productModelApi.packetSizemodel[index].pkt.toString()}',
+                                          style: TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            fontSize: size.width*0.024,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
                                     )
@@ -612,13 +678,13 @@ final List<String> richa = [
 
                   Padding(
                     padding: EdgeInsets.only(
-                        left: size.width * 0.03, top: size.height * 0.01),
+                        left: size.width * 0.03, top: size.height * 0.01,bottom: size.height*0.003),
                     child: Text(
                       'Details:',
                       style: TextStyle(
                         fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
+                        color: Colors.indigo.shade900,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
@@ -626,9 +692,10 @@ final List<String> richa = [
                     padding: EdgeInsets.only(
                         left: size.width * 0.03,
                         right: size.width * 0.03,
-                        top: size.height * 0.001),
+                        top: size.height * 0.001,
+                    bottom: size.height*0.002),
                     child: Container(
-                      height: size.height * 0.3,
+                      //height: size.height * 0.3,
                       width: size.width,
                       // color: Colors.green,
                       child: Text(
@@ -644,6 +711,7 @@ final List<String> richa = [
                         ),
                       ),
                     ),
+
                   ),
 
                   ///extended data
@@ -719,7 +787,7 @@ final List<String> richa = [
                                         Padding(
                                           padding:
                                           const EdgeInsets
-                                              .all(15.0),
+                                              .all(6.0),
                                           child: PhysicalModel(
                                             borderRadius:
                                             BorderRadius
@@ -748,9 +816,9 @@ final List<String> richa = [
                                                           .withOpacity(
                                                           1.0),
                                                       spreadRadius:
-                                                      5,
+                                                      1,
                                                       blurRadius:
-                                                      7,
+                                                      1,
                                                       //offset: Offset(0, 3), // changes position of shadow
                                                     ),
                                                   ],
@@ -761,30 +829,45 @@ final List<String> richa = [
                                                   BorderRadius
                                                       .circular(
                                                       5),
-                                                  child: Image
-                                                      .network(
-                                                    base +
-                                                        '${_aboutProductController.getabouttheproduct!.result![indexx].image.toString()}',
-                                                    fit: BoxFit
-                                                        .cover,
+                                                  child:CachedNetworkImage(
+                                                    imageUrl: base + "${_aboutProductController.getabouttheproduct!.result![indexx].image.toString()}",fit: BoxFit.fitHeight,
+                                                    placeholder: (context, url) => SizedBox(
+                                                        height: size.height * 0.40,
+                                                        width:size.width,
+                                                        //width: 4.w,
+                                                        child: Center(
+                                                          child: Image.asset("lib/assets/asset/zif_loading6.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                                          //CircularProgressIndicator()
+                                                        )
+                                                    ),
+                                                    errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                                                   ),
+                                                  // Image
+                                                  //     .network(
+                                                  //   base +
+                                                  //       '${_aboutProductController.getabouttheproduct!.result![indexx].image.toString()}',
+                                                  //   fit: BoxFit
+                                                  //       .cover,
+                                                  // ),
                                                 )),
                                           ),
                                         ),
                                         Container(
-                                          // height: 200,
-                                          // width: 200,
-                                            child: Text(
-                                              _aboutProductController
-                                                  .getabouttheproduct!
-                                                  .result![indexx]
-                                                  .title
-                                                  .toString(),
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight:
-                                                FontWeight.w700,
-                                                fontSize: 11.sp,
+                                           height: 20,
+                                           //width: 10.w,
+                                            child: Center(
+                                              child: Text(
+                                                _aboutProductController
+                                                    .getabouttheproduct!
+                                                    .result![indexx]
+                                                    .title
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight:
+                                                  FontWeight.w700,
+                                                  fontSize: 11.sp,
+                                                ),
                                               ),
                                             )),
                                         SizedBox(
@@ -796,7 +879,7 @@ final List<String> richa = [
                                           height: size.height *
                                               0.15,
                                           width:
-                                          size.width * 0.5,
+                                          size.width * 0.47,
                                           child: Text(
                                             _aboutProductController
                                                 .getabouttheproduct!
@@ -888,7 +971,7 @@ final List<String> richa = [
                                         Padding(
                                           padding:
                                           const EdgeInsets
-                                              .all(15.0),
+                                              .all(6.0),
                                           child: PhysicalModel(
                                             borderRadius:
                                             BorderRadius
@@ -917,9 +1000,9 @@ final List<String> richa = [
                                                           .withOpacity(
                                                           1.0),
                                                       spreadRadius:
-                                                      5,
+                                                      1,
                                                       blurRadius:
-                                                      7,
+                                                      1,
                                                       //offset: Offset(0, 3), // changes position of shadow
                                                     ),
                                                   ],
@@ -930,13 +1013,26 @@ final List<String> richa = [
                                                   BorderRadius
                                                       .circular(
                                                       5),
-                                                  child: Image
-                                                      .network(
-                                                    base +
-                                                        '${_standOutController.getstandoutpoints!.result![indexx].image.toString()}',
-                                                    fit: BoxFit
-                                                        .cover,
+                                                  child:CachedNetworkImage(
+                                                    imageUrl: base + "${_standOutController.getstandoutpoints!.result![indexx].image.toString()}",fit: BoxFit.fitHeight,
+                                                    placeholder: (context, url) => SizedBox(
+                                                        height: size.height * 0.40,
+                                                        width:size.width,
+                                                        //width: 4.w,
+                                                        child: Center(
+                                                          child: Image.asset("lib/assets/asset/zif_loading6.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                                          //CircularProgressIndicator()
+                                                        )
+                                                    ),
+                                                    errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                                                   ),
+                                                  // Image
+                                                  //     .network(
+                                                  //   base +
+                                                  //       '${_standOutController.getstandoutpoints!.result![indexx].image.toString()}',
+                                                  //   fit: BoxFit
+                                                  //       .cover,
+                                                  // ),
                                                 )),
                                           ),
                                         ),
@@ -1024,7 +1120,7 @@ final List<String> richa = [
 
                         ///Hello
                         Container(
-                          // height: size.height * 0.325,
+                          width: size.width ,
                             height: size.height * 0.425,
                             decoration: BoxDecoration(
 //color: Colors.green
@@ -1061,7 +1157,7 @@ final List<String> richa = [
                                         Padding(
                                           padding:
                                           const EdgeInsets
-                                              .all(15.0),
+                                              .all(6.0),
                                           child: PhysicalModel(
                                             borderRadius:
                                             BorderRadius
@@ -1074,7 +1170,7 @@ final List<String> richa = [
                                                 height: 26.h,
                                                 width:
                                                 size.width *
-                                                    0.5,
+                                                    0.55,
                                                 decoration:
                                                 BoxDecoration(
                                                   borderRadius:
@@ -1090,9 +1186,9 @@ final List<String> richa = [
                                                           .withOpacity(
                                                           1.0),
                                                       spreadRadius:
-                                                      5,
+                                                      1,
                                                       blurRadius:
-                                                      7,
+                                                      1,
                                                       //offset: Offset(0, 3), // changes position of shadow
                                                     ),
                                                   ],
@@ -1103,13 +1199,26 @@ final List<String> richa = [
                                                   BorderRadius
                                                       .circular(
                                                       5),
-                                                  child: Image
-                                                      .network(
-                                                    base +
-                                                        '${_allTriedProductController.allProductModel!.result![indexx].productImage.toString()}',
-                                                    fit: BoxFit
-                                                        .cover,
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: base + "${_allTriedProductController.allProductModel!.result![indexx].productImage.toString()}",fit: BoxFit.fitHeight,
+                                                    placeholder: (context, url) => SizedBox(
+                                                        height: size.height * 0.40,
+                                                        width:size.width,
+                                                        //width: 4.w,
+                                                        child: Center(
+                                                          child: Image.asset("lib/assets/asset/zif_loading6.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                                          //CircularProgressIndicator()
+                                                        )
+                                                    ),
+                                                    errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                                                   ),
+                                                  // Image
+                                                  //     .network(
+                                                  //   base +
+                                                  //       '${_allTriedProductController.allProductModel!.result![indexx].productImage.toString()}',
+                                                  //   fit: BoxFit
+                                                  //       .cover,
+                                                  // ),
                                                 )),
                                           ),
                                         ),
@@ -1118,14 +1227,14 @@ final List<String> richa = [
                                           EdgeInsets.only(
                                               left:
                                               size.width *
-                                                  0.04),
+                                                  0.00),
                                           child: Container(
                                               height:
                                               size.height *
-                                                  0.02,
+                                                  0.03,
                                               width:
                                               size.width *
-                                                  0.6,
+                                                  0.55,
                                               child:
                                               AutoSizeText(
                                                 _allTriedProductController
@@ -1140,7 +1249,7 @@ final List<String> richa = [
                                                       .black,
                                                   fontWeight:
                                                   FontWeight
-                                                      .w700,
+                                                      .w900,
                                                   fontSize:
                                                   11.sp,
                                                 ),
@@ -1152,7 +1261,7 @@ final List<String> richa = [
                                 })),
 
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
 
                         ///add product.................
@@ -1260,85 +1369,133 @@ final List<String> richa = [
                 top: size.height * 0.8),
             child: Row(
               children: [
-                InkWell(
-                  onTap: () {
-                    CallLoader.loader();
-
-                    //  -- final amount --//
-                    var finalamnt = _newProductByIdController.qty.value *
-                        _newProductByIdController
-                            .newModelid!
-                            .productModelApi
-                            .packetSizemodel[_newProductByIdController
-                            .selectedPrice.value]
-                            .finalPrice;
-
-                    _newProductByIdController.callAddtoCartApi(
-                        _newProductByIdController
-                            .newModelid!.productModelApi.id,
-                        _newProductByIdController
-                            .newModelid!
-                            .productModelApi
-                            .packetSizemodel[_newProductByIdController
-                            .selectedPrice.value]
-                            .pkt,
-                        _newProductByIdController
-                            .newModelid!
-                            .productModelApi
-                            .packetSizemodel[_newProductByIdController
-                            .selectedPrice.value]
-                            .qty,
-                        _newProductByIdController.qty.value,
-                        _newProductByIdController
-                            .newModelid!
-                            .productModelApi
-                            .packetSizemodel[_newProductByIdController
-                            .selectedPrice.value]
-                            .price,
-                        finalamnt);
-
-                    print('kjhgkdfg');
-                    // controller.addtocartApi(
-                    //     _flashProductByIdController
-                    //         .flashproductbyid!
-                    //         // .result![mainIndex]
-                    //         .result![mainIndex]
-                    //         .id);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: MyTheme.defaultPading),
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: AppColors.themecolors,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: AppColors.themecolors,
-                        //Colors.blueAccent,
-                        // Color(int.parse(
-                        //     Productss
-                        //         .products[mainIndex]
-                        //         .color
-                        //         .toString())),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.add_shopping_cart_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+                // InkWell(
+                //   ///todo:///
+                //   onTap: () {
+                //
+                //     CallLoader.loader();
+                //
+                //     //  -- final amount --//
+                //     var finalamnt = _newProductByIdController.qty.value *
+                //         _newProductByIdController
+                //             .newModelid!
+                //             .productModelApi
+                //             .packetSizemodel[_newProductByIdController
+                //             .selectedPrice.value]
+                //             .finalPrice;
+                //
+                //     _newProductByIdController.callAddtoCartApi(
+                //         _newProductByIdController
+                //             .newModelid!.productModelApi.id,
+                //         _newProductByIdController
+                //             .newModelid!
+                //             .productModelApi
+                //             .packetSizemodel[_newProductByIdController
+                //             .selectedPrice.value]
+                //             .pkt,
+                //         _newProductByIdController
+                //             .newModelid!
+                //             .productModelApi
+                //             .packetSizemodel[_newProductByIdController
+                //             .selectedPrice.value]
+                //             .qty,
+                //         _newProductByIdController.qty.value,
+                //         _newProductByIdController
+                //             .newModelid!
+                //             .productModelApi
+                //             .packetSizemodel[_newProductByIdController
+                //             .selectedPrice.value]
+                //             .price,
+                //         finalamnt);
+                //
+                //     print('kjhgkdfg');
+                //     // controller.addtocartApi(
+                //     //     _flashProductByIdController
+                //     //         .flashproductbyid!
+                //     //         // .result![mainIndex]
+                //     //         .result![mainIndex]
+                //     //         .id);
+                //   },
+                //   child: Container(
+                //     margin: EdgeInsets.only(right: MyTheme.defaultPading),
+                //     height: 50,
+                //     width: 50,
+                //     decoration: BoxDecoration(
+                //       color: AppColors.themecolors,
+                //       borderRadius: BorderRadius.circular(20),
+                //       border: Border.all(
+                //         color: AppColors.themecolors,
+                //         //Colors.blueAccent,
+                //         // Color(int.parse(
+                //         //     Productss
+                //         //         .products[mainIndex]
+                //         //         .color
+                //         //         .toString())),
+                //       ),
+                //     ),
+                //     child: Padding(
+                //       padding: const EdgeInsets.all(8.0),
+                //       child: Icon(
+                //         Icons.add_shopping_cart_sharp,
+                //         color: Colors.white,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
                   height: 50,
-                  width: size.width * 0.7,
+                  width: size.width * 0.9,
                   child: ElevatedButton(
+                     //onPressed: () {
+                    //
+                    //   _rozarPayController.openCheckout();
+                    //
+                    //   print('click');
+                    // },
                     onPressed: () {
-                      _rozarPayController.openCheckout();
 
-                      print('click');
+                      CallLoader.loader();
+
+                      //  -- final amount --//
+                      var finalamnt = _newProductByIdController.qty.value *
+                          _newProductByIdController
+                              .newModelid!
+                              .productModelApi
+                              .packetSizemodel[_newProductByIdController
+                              .selectedPrice.value]
+                              .finalPrice;
+
+                      _newProductByIdController.callAddtoCartApi(
+                          _newProductByIdController
+                              .newModelid!.productModelApi.id,
+                          _newProductByIdController
+                              .newModelid!
+                              .productModelApi
+                              .packetSizemodel[_newProductByIdController
+                              .selectedPrice.value]
+                              .pkt,
+                          _newProductByIdController
+                              .newModelid!
+                              .productModelApi
+                              .packetSizemodel[_newProductByIdController
+                              .selectedPrice.value]
+                              .qty,
+                          _newProductByIdController.qty.value,
+                          _newProductByIdController
+                              .newModelid!
+                              .productModelApi
+                              .packetSizemodel[_newProductByIdController
+                              .selectedPrice.value]
+                              .price,
+                          finalamnt);
+
+                      print('kjhgkdfg');
+                      // controller.addtocartApi(
+                      //     _flashProductByIdController
+                      //         .flashproductbyid!
+                      //         // .result![mainIndex]
+                      //         .result![mainIndex]
+                      //         .id);
                     },
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(
@@ -1349,7 +1506,7 @@ final List<String> richa = [
                         backgroundColor: MaterialStateProperty.all(
                             AppColors.themecolors)),
                     child: Text(
-                      'Buy Now'.toUpperCase(),
+                      'Add To Cart'.toUpperCase(),
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -1560,7 +1717,7 @@ final List<String> richa = [
                 Obx(
                   // () => _controller.selectedPath.value != ''
                       () => _controller.selectedPath.value != ''
-                      ? Image.file(File(_controller.selectedPath.value))
+                      ? InkWell(onTap: optionsImage,child: Image.file(File(_controller.selectedPath.value),),)
                       : Center(
                     child: InkWell(
                       onTap: (() {

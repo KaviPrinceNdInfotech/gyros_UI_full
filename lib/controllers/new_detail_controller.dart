@@ -50,7 +50,7 @@ class NewController extends GetxController {
     if (newModelid != null) {
       isLoading(false);
       Get.to(
-            () => ItemDetailsss(), //next page class
+            () => ItemDetailsss(productId: productid,), //next page class
         duration: Duration(
             milliseconds: 300), //duration of transitions, default 1 sec
         transition:

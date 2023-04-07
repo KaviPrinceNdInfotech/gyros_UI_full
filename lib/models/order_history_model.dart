@@ -136,7 +136,7 @@ class Result {
     required this.discountPrice,
     required this.finalPrice,
     required this.status,
-    required this.paymentMode,
+    // required this.paymentMode,
     required this.state,
     required this.city,
     required this.area,
@@ -156,7 +156,7 @@ class Result {
   double discountPrice;
   double finalPrice;
   String status;
-  String paymentMode;
+  //String paymentMode;
   String state;
   String city;
   String area;
@@ -176,7 +176,7 @@ class Result {
     discountPrice: json["DiscountPrice"],
     finalPrice: json["FinalPrice"],
     status: json["Status"],
-    paymentMode: json["PaymentMode"],
+    //paymentMode: json["PaymentMode"],
     state: json["State"],
     city: json["City"],
     area: json["Area"],
@@ -197,7 +197,7 @@ class Result {
     "DiscountPrice": discountPrice,
     "FinalPrice": finalPrice,
     "Status": status,
-    "PaymentMode": paymentMode,
+    //"PaymentMode": paymentMode,
     "State": state,
     "City": city,
     "Area": area,

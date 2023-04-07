@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:gyros_app/controllers/check_out_controller/check_out_controlles.dart';
 import 'package:gyros_app/models/all_product_model.dart';
 import 'package:gyros_app/models/blog_model.dart';
 import 'package:gyros_app/models/catagary_list_model.dart';
@@ -393,28 +394,28 @@ final box = GetStorage();
       return;
     }
   }
-  ///wallet get api
-  static walletAmountApi() async {
-    var prefs = GetStorage();
-    //read id..........
-    Id = prefs.read("Id").toString();
-    print('&&&&&&&&&&&&&&&&&&Richa:${Id}');
-     //var url = baseUrl + 'api/AdminApi/ListWalletMoney/27';
-      var url = baseUrl + 'api/AdminApi/ListWalletMoney/$Id';
-
-    try {
-      http.Response r = await http.get(Uri.parse(url));
-      print(r.body.toString());
-      if (r.statusCode == 200) {
-        WalletModel? walletlist = walletModelFromJson(r.body);
-        return walletlist;
-      }
-    } catch (error) {
-      print('Error5');
-
-      return;
-    }
-  }
+  // ///wallet get api.......................
+  // static walletAmountApi() async {
+  //   var prefs = GetStorage();
+  //   //read id..........
+  //   Id = prefs.read("Id").toString();
+  //   print('&&&&&&&&&&&&&&&&&&Richa:${Id}');
+  //    //var url = baseUrl + 'api/AdminApi/ListWalletMoney/27';
+  //     var url = baseUrl + 'api/AdminApi/ListWalletMoney/$Id';
+  //
+  //   try {
+  //     http.Response r = await http.get(Uri.parse(url));
+  //     print(r.body.toString());
+  //     if (r.statusCode == 200) {
+  //       WalletModel? walletlist = walletModelFromJson(r.body);
+  //       return walletlist;
+  //     }
+  //   } catch (error) {
+  //     print('Error5');
+  //
+  //     return;
+  //   }
+  // }
 
 
 
@@ -712,7 +713,11 @@ final box = GetStorage();
       //headers: headers
     );
     if (r.statusCode == 200) {
-      Get.snackbar('Sucess', '${r.body.toString()}',
+      ///rahul////////// for coupon discount amount show in cart_product2//////////
+      CheckoutController _checkoutController = Get.put(CheckoutController());
+      _checkoutController.getcheckoutApi();
+
+      Get.snackbar('Success', '${r.body.toString()}',
       colorText: Colors.red.shade900);
       var prefs = GetStorage();
       //saved id..........
@@ -729,7 +734,6 @@ final box = GetStorage();
       Get.snackbar('Error', r.body);
       return r;
     }
-
   }
 /// Post coupon textfield
   static PostCoupanTextFieldApi(var Companycoupon, var UserId) async {
@@ -1125,8 +1129,7 @@ final box = GetStorage();
     // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlOWNmMjg0ZC0yMGZhLTQ1ZTgtYmUxZC0wOTc1MmJmOGJmMzkiLCJJZCI6IjEiLCJ1c2VyaWQiOiIxIiwibmFtZSI6Inh5eiIsImV4cCI6MTY2NDQ0OTA4MSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNjYiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0NDM2NiJ9.ACMtaKjLrauPfyU0MKR67gwXANAC3A5yvNaFNgdLEjU';
     prefs.read("token").toString();
     final body = {"Id": "$Id"};
-    final request = http.StreamedRequest('GET',
-        Uri.parse("https://api.gyros.farm/api/ProductApi/AddToCartList"));
+    final request = http.StreamedRequest('GET',Uri.parse("https://api.gyros.farm/api/ProductApi/AddToCartList"));
     request.headers["Authorization"] = "Bearer $token";
     request.headers["Content-type"] = "application/json";
     request.sink
@@ -1144,7 +1147,10 @@ final box = GetStorage();
     }
   }
 
-  ///wallet post api
+
+
+///Todo:from here wallet section in api...................................................
+  ///wallet post api..........................................wallet......section.....
   static WalletPostApi(var UserId, var Money) async {
     var url = baseUrl + 'api/AdminApi/AddWalletMoney';
     var prefs = GetStorage();
@@ -1184,6 +1190,77 @@ final box = GetStorage();
       return r;
     }
   }
+
+  ///get wallet ammount section..................................
+  static walletAmountApi() async {
+    var prefs = GetStorage();
+    //read id..........
+    Id = prefs.read("Id").toString();
+    print('&&&&&&&&&&&&&&&&&&Richa:${Id}');
+    //var url = baseUrl + 'api/AdminApi/ListWalletMoney/27';
+    var url = baseUrl + 'api/AdminApi/ListWalletMoney/$Id';
+
+    try {
+      http.Response r = await http.get(Uri.parse(url));
+      print(r.body.toString());
+      if (r.statusCode == 200) {
+        WalletModel? walletlist = walletModelFromJson(r.body);
+        return walletlist;
+      }
+    } catch (error) {
+      print('Error5');
+
+      return;
+    }
+  }
+
+
+  ///wallet post update api..........................................4...april..2023....
+  static WalletPostUpdateApi(var UserId, var walletAmount) async {
+    var url = baseUrl + 'api/AdminApi/UpdateWalletMoney';
+    var prefs = GetStorage();
+    // saved id..........
+    //prefs.write("Id".toString(), json.decode(r.body)['Id']);
+    Id = prefs.read("Id").toString();
+    print('kjkjkljjkl:${Id}');
+    //
+    // token = prefs.read("token").toString();
+    // print('&&&&&&&&&&&&&&&&&&&&&&okok:${token}');
+
+    var body = {
+      // "UserId": UserId,
+      "UserId": Id,
+      "walletAmount": walletAmount,
+    };
+    // final headers = {"Authorization": "Bearer $token"};
+
+    print(body);
+    http.Response r = await http.post(Uri.parse(url), body: body);
+    print(url);
+    print(r.body);
+    print(r.statusCode);
+
+    if (r.statusCode == 200) {
+      //  var prefs = GetStorage();
+      // // saved id..........
+      //  prefs.write("Id".toString(), json.decode(r.body)['Id']);
+      //  Id = prefs.read("Id").toString();
+      //  print('kjkjkljjkl:${Id}');
+      // Get.snackbar('Sucess', 'Added cart Sucessfully');
+      return r;
+    } else if (r.statusCode == 200) {
+      Get.snackbar('message', r.body);
+    } else {
+      Get.snackbar('Error', r.body);
+      return r;
+    }
+  }
+
+  ///.............end of the wallet section...............
+
+
+
+
 
   ///add to cart api....gyros....17............wronfggggggg.........
   ///richa
@@ -1404,8 +1481,6 @@ final box = GetStorage();
       "Id": userId,
     };
     final headers = {"Authorization": "Bearer $token"};
-
-    print(body);
     http.Response r =
     await http.post(Uri.parse(url), body: body, headers: headers);
     print(r.body);
@@ -1674,7 +1749,6 @@ final box = GetStorage();
 
   static GetCheckoutApi() async {
     var prefs = GetStorage();
-    //read id..........
     Id = prefs.read("Id").toString();
     print('&&&&&&&&&&&&&&&&&&prince108profile:${Id}');
     var url = baseUrl + 'api/ProductApi/Checkout/$Id';
@@ -1684,7 +1758,8 @@ final box = GetStorage();
       print(url);
       if (r.statusCode == 200) {
         CheckoutModel checkoutModel = checkoutModelFromJson(r.body);
-        print("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR123: ${checkoutModel.result?.deliveryCharge}");
+        print("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR123: ${checkoutModel.result?.totalCost}");
+       prefs.write("totalCostR", checkoutModel.result?.totalCost);  // used in cart_product2
         return checkoutModel;
       }
     } catch (error) {
@@ -1706,7 +1781,7 @@ final box = GetStorage();
       print(r.body.toString());
       if (r.statusCode == 200) {
         OrderHistoryModel orderHistoryModel = orderHistoryModelFromJson(r.body);
-       var rahul= prefs.write("rahul", orderHistoryModel.result[0].invoice);
+       var rahul= prefs.write("rahul", orderHistoryModel.result?[0].invoice);
         print("###############################: ${rahul}");
         return orderHistoryModel;
       }
@@ -1721,26 +1796,19 @@ final box = GetStorage();
   static PostOrderApi() async {
     var prefs = GetStorage();
     Id = prefs.read("Id").toString();
-    print('&&&&&&&&&&&&&&&&&&&&&&:${Id}');
-    //saved token.........
-    token = prefs.read("token").toString();
-    final headers = {"Authorization": "Bearer $token"};
-
-    var url = baseUrl + 'api/Order/Orders/$Id';
-    print(token);
-
-    http.Response r = await http.post(
-      Uri.parse(url), headers: headers,
-      //headers: headers
-    );
-
+    print('&&&&&&&&&&&&&&&&&&&&&&Id:${Id}');
+   token = prefs.read("token").toString();
+   final headers = {'Authorization': 'Bearer $token'};
+    var url = baseUrl + 'api/Order/Orders/149';
+    http.Response r = await http.post(Uri.parse(url), headers: headers,
+    body:{
+      "id": "$Id"
+    });
+    print("response##############: ${r.body.toString()}");
     if (r.statusCode == 200) {
-      print(token);
       return r;
-    } else if (r.statusCode == 401) {
-      Get.snackbar('message', r.body);
-    } else {
-      Get.snackbar('Error', r.body);
+    }else {
+      Get.snackbar('Error456', r.body);
       return r;
     }
   }
@@ -1904,32 +1972,32 @@ final box = GetStorage();
 
   //aadhar detail updated...............new 5............
 
-  static userAadharApi(
-      var aadhaarCardNumber,
-      ) async {
-    var prefs = GetStorage();
-    token = prefs.read("token");
-    print(token);
-    var headers = {
-      'Authorization': 'Bearer $token',
-    };
-    print(headers);
-    var url = baseUrl + 'user/aadhaar-number';
-
-    var body = {
-      "aadhaarCardNumber": aadhaarCardNumber,
-    };
-    print(body);
-    http.Response r =
-    await http.put(Uri.parse(url), body: body, headers: headers);
-    print(r.body);
-    if (r.statusCode == 200) {
-      return r;
-    } else {
-      Get.snackbar('Error', 'Details');
-      return r;
-    }
-  }
+  // static userAadharApi(
+  //     var aadhaarCardNumber,
+  //     ) async {
+  //   var prefs = GetStorage();
+  //   token = prefs.read("token");
+  //   print(token);
+  //   var headers = {
+  //     'Authorization': 'Bearer $token',
+  //   };
+  //   print(headers);
+  //   var url = baseUrl + 'user/aadhaar-number';
+  //
+  //   var body = {
+  //     "aadhaarCardNumber": aadhaarCardNumber,
+  //   };
+  //   print(body);
+  //   http.Response r =
+  //   await http.put(Uri.parse(url), body: body, headers: headers);
+  //   print(r.body);
+  //   if (r.statusCode == 200) {
+  //     return r;
+  //   } else {
+  //     Get.snackbar('Error', 'Details');
+  //     return r;
+  //   }
+  // }
 
   //personal details page.........new 7.........
 
@@ -2276,64 +2344,64 @@ final box = GetStorage();
 
   ///post Chat support api..new 22...........................
 
-  static userChatsupportApi(
-      var comment,
-      ) async {
-    var prefs = GetStorage();
-    token = prefs.read("token");
-    print(token);
-    var headers = {
-      'Authorization': 'Bearer $token',
-    };
-    print(headers);
-    var url = baseUrl + 'support-ticket';
-
-    var body = {
-      "comment": comment,
-    };
-    print(body);
-    http.Response r =
-    await http.post(Uri.parse(url), body: body, headers: headers);
-    print(r.body);
-    if (r.statusCode == 200) {
-      return r;
-    } else {
-      Get.snackbar('Error', 'Details');
-      return r;
-    }
-  }
+  // static userChatsupportApi(
+  //     var comment,
+  //     ) async {
+  //   var prefs = GetStorage();
+  //   token = prefs.read("token");
+  //   print(token);
+  //   var headers = {
+  //     'Authorization': 'Bearer $token',
+  //   };
+  //   print(headers);
+  //   var url = baseUrl + 'support-ticket';
+  //
+  //   var body = {
+  //     "comment": comment,
+  //   };
+  //   print(body);
+  //   http.Response r =
+  //   await http.post(Uri.parse(url), body: body, headers: headers);
+  //   print(r.body);
+  //   if (r.statusCode == 200) {
+  //     return r;
+  //   } else {
+  //     Get.snackbar('Error', 'Details');
+  //     return r;
+  //   }
+  // }
 
   //add bank details..................................................................
-
-  static addbankinApi(
-      var accHolderName,
-      var bankname,
-      var accnumber,
-      var confirmaccnumber,
-      var ifsccode,
-      ) async {
-    var url = baseUrl + 'api/addbank';
-
-    var body = {
-      "accHolderName": accHolderName,
-      "bankname": bankname,
-      "accnumber": accnumber,
-      "confirmaccnumber": confirmaccnumber,
-      "ifsccode": ifsccode,
-    };
-
-    http.Response r = await http.post(
-      Uri.parse(url),
-      body: body,
-    );
-    print(r.body);
-    if (r.statusCode == 200) {
-      return r;
-    } else {
-      Get.snackbar('Error', 'Details');
-      return r;
-    }
-  }
+///
+  // static addbankinApi(
+  //     var accHolderName,
+  //     var bankname,
+  //     var accnumber,
+  //     var confirmaccnumber,
+  //     var ifsccode,
+  //     ) async {
+  //   var url = baseUrl + 'api/addbank';
+  //
+  //   var body = {
+  //     "accHolderName": accHolderName,
+  //     "bankname": bankname,
+  //     "accnumber": accnumber,
+  //     "confirmaccnumber": confirmaccnumber,
+  //     "ifsccode": ifsccode,
+  //   };
+  //
+  //   http.Response r = await http.post(
+  //     Uri.parse(url),
+  //     body: body,
+  //   );
+  //   print(r.body);
+  //   if (r.statusCode == 200) {
+  //     return r;
+  //   } else {
+  //     Get.snackbar('Error', 'Details');
+  //     return r;
+  //   }
+  // }
 
   //addpersonal details..................................
 
@@ -2391,96 +2459,98 @@ final box = GetStorage();
 
   ///login with Facebook Api...............................
 
-  static loginWithFacebook(String fbToken) async {
-    //CallLoader.loader();
-    try {
-      var headers = {'Content-Type': 'application/json'};
-      var request =
-      http.Request('POST', Uri.parse(baseUrl + 'user/login/facebook'));
-      request.body = json.encode({"fbToken": fbToken});
-      request.headers.addAll(headers);
-
-      http.StreamedResponse response = await request.send();
-      http.Response r = await http.Response.fromStream(response);
-      var data = jsonDecode(r.body);
-      if (response.statusCode == 200) {
-        // CallLoader.hideLoader();
-        var prefs = GetStorage();
-        prefs.write("token", json.decode(r.body)['data']['loginToken']);
-        token = prefs.read("token");
-        if (data['data']['phoneNumberVerified']) {
-          //Get.offAll(() => BottomBarScreen());
-        } else {
-          //Get.offAll(() => EnterMobileScreen());
-        }
-      } else {
-        //CallLoader.hideLoader();
-        //CallLoader.errorDialog(jsonDecode(r.body)["error"]);
-      }
-    } on HttpException catch (e) {
-      //CallLoader.hideLoader();
-      //CallLoader.errorDialog(e.message);
-    }
-  }
+  // static loginWithFacebook(String fbToken) async {
+  //   //CallLoader.loader();
+  //   try {
+  //     var headers = {'Content-Type': 'application/json'};
+  //     var request =
+  //     http.Request('POST', Uri.parse(baseUrl + 'user/login/facebook'));
+  //     request.body = json.encode({"fbToken": fbToken});
+  //     request.headers.addAll(headers);
+  //
+  //     http.StreamedResponse response = await request.send();
+  //     http.Response r = await http.Response.fromStream(response);
+  //     var data = jsonDecode(r.body);
+  //     if (response.statusCode == 200) {
+  //       // CallLoader.hideLoader();
+  //       var prefs = GetStorage();
+  //       prefs.write("token", json.decode(r.body)['data']['loginToken']);
+  //       token = prefs.read("token");
+  //       if (data['data']['phoneNumberVerified']) {
+  //         //Get.offAll(() => BottomBarScreen());
+  //       } else {
+  //         //Get.offAll(() => EnterMobileScreen());
+  //       }
+  //     } else {
+  //       //CallLoader.hideLoader();
+  //       //CallLoader.errorDialog(jsonDecode(r.body)["error"]);
+  //     }
+  //   } on HttpException catch (e) {
+  //     //CallLoader.hideLoader();
+  //     //CallLoader.errorDialog(e.message);
+  //   }
+  // }
 
   ///login with google..................................
-  static loginWithGoogle(String gToken) async {
-    //CallLoader.loader();
-    try {
-      var headers = {'Content-Type': 'application/json'};
-      var request =
-      http.Request('POST', Uri.parse(baseUrl + 'user/login/google'));
-      request.body = json.encode({"googleIdToken": gToken});
-      request.headers.addAll(headers);
+  // static loginWithGoogle(String gToken) async {
+  //   //CallLoader.loader();
+  //   try {
+  //     var headers = {'Content-Type': 'application/json'};
+  //     var request =
+  //     http.Request('POST', Uri.parse(baseUrl + 'user/login/google'));
+  //     request.body = json.encode({"googleIdToken": gToken});
+  //     request.headers.addAll(headers);
+  //
+  //     http.StreamedResponse response = await request.send();
+  //     http.Response r = await http.Response.fromStream(response);
+  //     var data = jsonDecode(r.body);
+  //     if (response.statusCode == 200) {
+  //       //CallLoader.hideLoader();
+  //       var prefs = GetStorage();
+  //       prefs.write("token", json.decode(r.body)['data']['loginToken']);
+  //       token = prefs.read("token");
+  //       if (data['data']['phoneNumberVerified']) {
+  //         //Get.offAll(() => BottomBarScreen());
+  //       } else {
+  //         //Get.offAll(() => EnterMobileScreen());
+  //       }
+  //     } else {
+  //       //CallLoader.hideLoader();
+  //       //CallLoader.errorDialog(jsonDecode(r.body)["error"]);
+  //     }
+  //   } on HttpException catch (e) {
+  //     //CallLoader.hideLoader();
+  //     //CallLoader.errorDialog(e.message);
+  //   }
+  // }
+  //
+  // static editMobile(String mobile) async {
+  //   //CallLoader.loader();
+  //   try {
+  //     var headers = {
+  //       'Authorization': 'Bearer ' + token,
+  //       'Content-Type': 'application/json'
+  //     };
+  //     var request =
+  //     http.Request('PUT', Uri.parse(baseUrl + 'user/phone-number'));
+  //     request.body = json.encode({"phoneNumber": mobile});
+  //     request.headers.addAll(headers);
+  //     http.StreamedResponse response = await request.send();
+  //     http.Response r = await http.Response.fromStream(response);
+  //     if (response.statusCode == 200) {
+  //       //CallLoader.hideLoader();
+  //       //Get.to(() => VerifyMobileScreen());
+  //     } else {
+  //       //CallLoader.hideLoader();
+  //       //CallLoader.errorDialog(jsonDecode(r.body)['error']);
+  //     }
+  //   } on HttpException catch (e) {
+  //     //CallLoader.hideLoader();
+  //     //CallLoader.errorDialog(e.message);
+  //   }
+  // }
 
-      http.StreamedResponse response = await request.send();
-      http.Response r = await http.Response.fromStream(response);
-      var data = jsonDecode(r.body);
-      if (response.statusCode == 200) {
-        //CallLoader.hideLoader();
-        var prefs = GetStorage();
-        prefs.write("token", json.decode(r.body)['data']['loginToken']);
-        token = prefs.read("token");
-        if (data['data']['phoneNumberVerified']) {
-          //Get.offAll(() => BottomBarScreen());
-        } else {
-          //Get.offAll(() => EnterMobileScreen());
-        }
-      } else {
-        //CallLoader.hideLoader();
-        //CallLoader.errorDialog(jsonDecode(r.body)["error"]);
-      }
-    } on HttpException catch (e) {
-      //CallLoader.hideLoader();
-      //CallLoader.errorDialog(e.message);
-    }
-  }
-
-  static editMobile(String mobile) async {
-    //CallLoader.loader();
-    try {
-      var headers = {
-        'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json'
-      };
-      var request =
-      http.Request('PUT', Uri.parse(baseUrl + 'user/phone-number'));
-      request.body = json.encode({"phoneNumber": mobile});
-      request.headers.addAll(headers);
-      http.StreamedResponse response = await request.send();
-      http.Response r = await http.Response.fromStream(response);
-      if (response.statusCode == 200) {
-        //CallLoader.hideLoader();
-        //Get.to(() => VerifyMobileScreen());
-      } else {
-        //CallLoader.hideLoader();
-        //CallLoader.errorDialog(jsonDecode(r.body)['error']);
-      }
-    } on HttpException catch (e) {
-      //CallLoader.hideLoader();
-      //CallLoader.errorDialog(e.message);
-    }
-  }
+  ///uper code id not neccessary...................
 
   static verifyMobile({required String mobile, required String otp}) async {
     //CallLoader.loader();
@@ -2537,64 +2607,65 @@ final box = GetStorage();
       return error;
     }
   }
-
-  static postReview(
-      var name,
-      var email,
-      var title,
-      var description,
-      var mobile,
-      var rating1,
-      var rating2,
-      var rating3,
-      var rating4,
-      var rating5,
-      var imagePath) async {
-    var headers = {
-      'productid': '98',
-      'Name': '$name',
-      'Email': '$email',
-      'Description': '$description',
-      'Mobile': '$mobile',
-      'Title': '$title',
-      'Rating1': '$rating1',
-      'Rating2': '$rating2',
-      'Rating3': '$rating3',
-      'Rating4': '$rating4',
-      'Rating5': '$rating5'
-    };
-    print(name);
-    print(email);
-    print(title);
-    print(description);
-    print(mobile);
-    print(rating1);
-    print(rating2);
-    print(rating3);
-    print(rating4);
-    print(rating5);
-    print(imagePath);
-    try {
-      var url = baseUrl + '/api/FileUpload/Upload';
-      var request = http.MultipartRequest('POST', Uri.parse(url));
-      request.files.add(await http.MultipartFile.fromPath('image', imagePath));
-      request.headers.addAll(headers);
-      http.StreamedResponse response = await request.send();
-      http.Response r = await http.Response.fromStream(response);
-      print(r.statusCode);
-      print(r.body);
-      if (r.statusCode == 200) {
-        return r;
-      } else {
-        CallLoader.hideLoader();
-        Get.snackbar('Error', r.body);
-        return r;
-      }
-    } catch (e) {
-      print('Error');
-      print(e.toString());
-    }
-  }
+  ///review old..........
+  //
+  // static postReview(
+  //     var name,
+  //     var email,
+  //     var title,
+  //     var description,
+  //     var mobile,
+  //     var rating1,
+  //     var rating2,
+  //     var rating3,
+  //     var rating4,
+  //     var rating5,
+  //     var imagePath) async {
+  //   var headers = {
+  //     'productid': '98',
+  //     'Name': '$name',
+  //     'Email': '$email',
+  //     'Description': '$description',
+  //     'Mobile': '$mobile',
+  //     'Title': '$title',
+  //     'Rating1': '$rating1',
+  //     'Rating2': '$rating2',
+  //     'Rating3': '$rating3',
+  //     'Rating4': '$rating4',
+  //     'Rating5': '$rating5'
+  //   };
+  //   print(name);
+  //   print(email);
+  //   print(title);
+  //   print(description);
+  //   print(mobile);
+  //   print(rating1);
+  //   print(rating2);
+  //   print(rating3);
+  //   print(rating4);
+  //   print(rating5);
+  //   print(imagePath);
+  //   try {
+  //     var url = baseUrl + '/api/FileUpload/Upload';
+  //     var request = http.MultipartRequest('POST', Uri.parse(url));
+  //     request.files.add(await http.MultipartFile.fromPath('image', imagePath));
+  //     request.headers.addAll(headers);
+  //     http.StreamedResponse response = await request.send();
+  //     http.Response r = await http.Response.fromStream(response);
+  //     print(r.statusCode);
+  //     print(r.body);
+  //     if (r.statusCode == 200) {
+  //       return r;
+  //     } else {
+  //       CallLoader.hideLoader();
+  //       Get.snackbar('Error', r.body);
+  //       return r;
+  //     }
+  //   } catch (e) {
+  //     print('Error');
+  //     print(e.toString());
+  //   }
+  // }
 
   ///new detail model api..........detail page 4 feb 2023..........okoko.....prince
   static newproductdetails(var productid) async {
@@ -2663,4 +2734,77 @@ final box = GetStorage();
       print(e.toString());
     }
   }
+
+
+  /// todo: providers: 7 april 2023 prince review ,,from here new 3 api and this is from previous api providers not provider
+
+
+  static postReview(
+      var name,
+      var mobile,
+      var email,
+      var description,
+      var title,
+      var rating1,
+      var rating2,
+      var rating3,
+      var rating4,
+      var rating5,
+      var ProductId,
+      var ImageName,
+      var imagebase,
+
+      )async {
+    var body = {
+      'Name': '$name',
+      'Mobile': '$mobile',
+      'Email': '$email',
+      'Description': '$description',
+      'Title': '$title',
+      'Rating1': '$rating1',
+      'Rating2': '$rating2',
+      'Rating3': '$rating3',
+      'Rating4': '$rating4',
+      'Rating5': '$rating5',
+      'ProductId': '$ProductId',
+      'ImageName': '$ImageName',
+      'ImageBase': '$imagebase'
+
+    };
+
+
+    print(name);
+    print(email);
+    print(title);
+    print(description);
+    print(mobile);
+    print(rating1);
+    print(rating2);
+    print(rating3);
+    print(rating4);
+    print(rating5);
+    print(ProductId);
+    print(ImageName);
+    try {
+      var url = baseUrl + '/api/AdminApi/AddReview';
+      var r = await http.post(Uri.parse(url),body:body );
+      print(body);
+      print(r.statusCode);
+      print(r.body);
+      if (r.statusCode == 200) {
+        return r;
+
+      } else {
+        CallLoader.hideLoader();
+        Get.snackbar('Error', r.body);
+        return r;
+      }
+    } catch (e) {
+      print('Error');
+      print(e.toString());
+    }
+
+
+  }
+///
 }

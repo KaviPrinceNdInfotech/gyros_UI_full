@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -149,15 +150,28 @@ class GiftBox extends StatelessWidget {
                                             },
                                             child: Container(
                                               height: size.height * 0.38,
+                                              width: size.width,
                                               //color: Colors.red,
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                                 color: Colors.grey,
-                                                image: DecorationImage(
-                                                    image: NetworkImage(base +
-                                                        '${_giftBoxController.giftcardModel!.result![index].imageName.toString()}'),
-                                                    fit: BoxFit.fill),
+                                                // image: DecorationImage(
+                                                //     image: NetworkImage(base +
+                                                //         '${_giftBoxController.giftcardModel!.result![index].imageName.toString()}'),
+                                                //     fit: BoxFit.fill),
+                                              ),
+                                              child: CachedNetworkImage(
+                                                imageUrl: base + "${_giftBoxController.giftcardModel!.result![index].imageName.toString()}",fit: BoxFit.fitWidth,
+                                                placeholder: (context, url) => SizedBox(
+                                                    height: 1.h,
+                                                    width: 4.w,
+                                                    child: Center(
+                                                      child: Image.asset("lib/assets/asset/zif_loading6.gif"),
+                                                      //CircularProgressIndicator()
+                                                    )
+                                                ),
+                                                errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                                               ),
                                             ),
                                           ),
@@ -186,6 +200,7 @@ class GiftBox extends StatelessWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
+                                                  ///
                                                   // Text(
                                                   //   '${_giftBoxController.giftcardModel!.result![index]..toString()} gm',
                                                   //   style: TextStyle(
@@ -195,9 +210,14 @@ class GiftBox extends StatelessWidget {
                                                   //     color: Colors.white,
                                                   //   ),
                                                   // ),
+                                                  ///
+
                                                   SizedBox(
                                                     height: size.height * 0.007,
                                                   ),
+
+
+                                                  ///
 
                                                   // SizedBox(
                                                   //   width: size
@@ -229,6 +249,8 @@ class GiftBox extends StatelessWidget {
                                                   //     ),
                                                   //   ),
                                                   // ),
+
+
                                                   SizedBox(
                                                     width: size.width * 0.48,
                                                     height: size.height * 0.03,

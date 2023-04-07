@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -678,34 +679,53 @@ class HomePagePractice extends StatelessWidget {
                                                               padding:
                                                                   EdgeInsets.all(
                                                                       1.0),
-                                                              child:
-                                                                  Image.network(
-                                                                base +
-                                                                    '${_homePageController.getflashsellproduct?.result![index].productImage.toString()}',
-                                                                fit: BoxFit.fill,
-                                                                errorBuilder:
-                                                                    (context,
-                                                                        error,
-                                                                        stackTrace) {
-                                                                  //if image not comming in catagary then we have to purchase
-
-                                                                  return Icon(
-                                                                    Icons.error,
-                                                                    color: Colors
-                                                                        .grey,
-                                                                  );
-                                                                },
-
-                                                                height:
-                                                                    size.height *
-                                                                        0.04,
-                                                                // color: _homePageController
-                                                                //             .selectedIndex
-                                                                //             .value ==
-                                                                //         index
-                                                                //     ? Colors.white
-                                                                //     : MyTheme.ThemeColors
+                                                              child: CachedNetworkImage(
+                                                                imageUrl: base + "${_homePageController.getflashsellproduct?.result![index].productImage.toString()}",fit: BoxFit.fitWidth,
+                                                                placeholder: (context, url) => SizedBox(
+                                                                    height: size.height *
+                                                                        0.17,
+                                                                    width:
+                                                                    size.width * 0.36,
+                                                                    //width: 4.w,
+                                                                    child: Center(
+                                                                      child: Image.asset("lib/assets/asset/zif_loading.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                                                      //CircularProgressIndicator()
+                                                                    )
+                                                                ),
+                                                                errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                                                               ),
+                                                              // FadeInImage.assetNetwork(
+                                                              //   placeholder: 'lib/assets/asset/zif_loading.gif',fadeInCurve: Curves.linear,
+                                                              //   image: base +'${_homePageController.getflashsellproduct?.result![index].productImage.toString()}',fit: BoxFit.fill,
+                                                              // ),
+                                                              ///
+                                                              //     Image.network(
+                                                              //   base +
+                                                              //       '${_homePageController.getflashsellproduct?.result![index].productImage.toString()}',
+                                                              //   fit: BoxFit.fill,
+                                                              //   errorBuilder:
+                                                              //       (context,
+                                                              //           error,
+                                                              //           stackTrace) {
+                                                              //     //if image not comming in catagary then we have to purchase
+                                                              //
+                                                              //     return Icon(
+                                                              //       Icons.error,
+                                                              //       color: Colors
+                                                              //           .grey,
+                                                              //     );
+                                                              //   },
+                                                              //
+                                                              //   height:
+                                                              //       size.height *
+                                                              //           0.04,
+                                                              //   // color: _homePageController
+                                                              //   //             .selectedIndex
+                                                              //   //             .value ==
+                                                              //   //         index
+                                                              //   //     ? Colors.white
+                                                              //   //     : MyTheme.ThemeColors
+                                                              // ),
                                                             ),
                                                           ),
                                                         ),
@@ -1311,13 +1331,27 @@ class HomePagePractice extends StatelessWidget {
                                                               10),
                                                       color: MyTheme
                                                           .ContainerUnSelectedColor,
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                          base +
-                                                              '${_homePageController.getfirstorderbanner!.result[index].imagePath}',
-                                                        ),
-                                                        fit: BoxFit.fill,
+                                                      // image: DecorationImage(
+                                                      //   image: NetworkImage(
+                                                      //     base +
+                                                      //         '${_homePageController.getfirstorderbanner!.result[index].imagePath}',
+                                                      //   ),
+                                                      //   fit: BoxFit.fill,
+                                                      // ),
+                                                    ),
+                                                    child:  CachedNetworkImage(
+                                                      imageUrl: base + "${_homePageController.getfirstorderbanner!.result[index].imagePath.toString()}",fit: BoxFit.fill,
+                                                      placeholder: (context, url) => SizedBox(
+                                                          height: 23.h,
+                                                          width: 100
+                                                              .w,
+                                                          //width: 4.w,
+                                                          child: Center(
+                                                            child: Image.asset("lib/assets/asset/zif_loading6.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                                            //CircularProgressIndicator()
+                                                          )
                                                       ),
+                                                      errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                                                     ),
                                                   ),
                                                 ),
@@ -1591,33 +1625,53 @@ class HomePagePractice extends StatelessWidget {
                                                                   EdgeInsets.all(
                                                                       1.0),
                                                               child:
-                                                                  Image.network(
-                                                                base +
-                                                                    '${_homePageController.getflashsellproduct!.result![index].productImage.toString()}',
-                                                                fit: BoxFit.fill,
-                                                                errorBuilder:
-                                                                    (context,
-                                                                        error,
-                                                                        stackTrace) {
-                                                                  //if image not comming in catagary then we have to purchase
-
-                                                                  return Icon(
-                                                                    Icons.error,
-                                                                    color: Colors
-                                                                        .grey,
-                                                                  );
-                                                                },
-
-                                                                height:
-                                                                    size.height *
-                                                                        0.04,
-                                                                // color: _homePageController
-                                                                //             .selectedIndex
-                                                                //             .value ==
-                                                                //         index
-                                                                //     ? Colors.white
-                                                                //     : MyTheme.ThemeColors
+                                                              CachedNetworkImage(
+                                                                imageUrl: base + "${_homePageController.getflashsellproduct?.result![index].productImage.toString()}",fit: BoxFit.fitWidth,
+                                                                placeholder: (context, url) => SizedBox(
+                                                                    height: size.height *
+                                                                        0.17,
+                                                                    width:
+                                                                    size.width * 0.36,
+                                                                    //width: 4.w,
+                                                                    child: Center(
+                                                                      child: Image.asset("lib/assets/asset/zif_loading.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                                                      //CircularProgressIndicator()
+                                                                    )
+                                                                ),
+                                                                errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                                                               ),
+                                                              // FadeInImage.assetNetwork(
+                                                              //   placeholder: 'lib/assets/asset/zif_loading.gif',fadeInCurve: Curves.linear,
+                                                              //   image: base +'${_homePageController.getflashsellproduct?.result![index].productImage.toString()}',fit: BoxFit.fill,
+                                                              // ),
+                                                              ///
+                                                              //     Image.network(
+                                                              //   base +
+                                                              //       '${_homePageController.getflashsellproduct!.result![index].productImage.toString()}',
+                                                              //   fit: BoxFit.fill,
+                                                              //   errorBuilder:
+                                                              //       (context,
+                                                              //           error,
+                                                              //           stackTrace) {
+                                                              //     //if image not comming in catagary then we have to purchase
+                                                              //
+                                                              //     return Icon(
+                                                              //       Icons.error,
+                                                              //       color: Colors
+                                                              //           .grey,
+                                                              //     );
+                                                              //   },
+                                                              //
+                                                              //   height:
+                                                              //       size.height *
+                                                              //           0.04,
+                                                              //   // color: _homePageController
+                                                              //   //             .selectedIndex
+                                                              //   //             .value ==
+                                                              //   //         index
+                                                              //   //     ? Colors.white
+                                                              //   //     : MyTheme.ThemeColors
+                                                              // ),
                                                             ),
                                                           ),
                                                         ),
@@ -3012,7 +3066,7 @@ class HomePagePractice extends StatelessWidget {
                         ),
                       ),
                       Container(
-                          height: size.height * 0.2,
+                          height: size.height * 0.18,
                           decoration: BoxDecoration(color: Color(0xffE8F9FD)),
 
                           //width: double.infinity,
@@ -3036,23 +3090,49 @@ class HomePagePractice extends StatelessWidget {
                                               elevation: 0.1,
                                               child: Padding(
                                                 padding:
-                                                    const EdgeInsets.all(2.0),
+                                                     EdgeInsets.symmetric(horizontal: size.width*0.01),
                                                 child: Container(
-                                                  height: 15.h,
+                                                  //height: 1.h,
                                                   width:
-                                                      95.w, //size.width * 0.99,
+                                                      98.w, //size.width * 0.99,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(5),
                                                     // color: MyTheme.ContainerUnSelectedColor,
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(
-                                                        base +
-                                                            '${_homePageController.getouroffer!.result![index].promotionalBannerPath}',
-                                                      ),
-                                                      fit: BoxFit.fill,
-                                                    ),
+                                                    // image: DecorationImage(
+                                                    //   image:
+                                                    //   NetworkImage(
+                                                    //     base +
+                                                    //         '${_homePageController.getouroffer!.result![index].promotionalBannerPath}',
+                                                    //   ),
+                                                    //   fit: BoxFit.fill,
+                                                    // ),
+
                                                   ),
+                                                  child: Center(
+                                                      child:
+                                                      CachedNetworkImage(
+                                                        imageUrl: base + "${_homePageController.getouroffer!.result![index].promotionalBannerPath.toString()}",fit: BoxFit.cover,
+                                                        placeholder: (context, url) => SizedBox(
+                                                            height: 23.h,
+                                                            width: 100
+                                                                .w,
+                                                            //width: 4.w,
+                                                            child: Center(
+                                                              child: Image.asset("lib/assets/asset/zif_loading6.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                                              //CircularProgressIndicator()
+                                                            )
+                                                        ),
+                                                        errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
+                                                      ),
+
+                                                      // FadeInImage.assetNetwork(
+                                                      //   placeholder: 'lib/assets/asset/zif_loading.gif',fadeInCurve: Curves.linear,
+                                                      //   image: base +'${_homePageController.getouroffer!.result![index].promotionalBannerPath}',fit: BoxFit.fill,
+                                                      // )
+
+                                                  ),
+
                                                 ),
                                               ),
                                             ),

@@ -6,7 +6,9 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:gyros_app/controllers/wallet/wallet_controller.dart';
 import 'package:gyros_app/services/api_provider.dart';
+import 'package:gyros_app/view/wallet.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../view/home_page/profile/home_page_practice.dart';
 import '../../widgets/circular_loader.dart';
 
@@ -72,8 +74,48 @@ class WalletPostController extends GetxController {
     return r.statusCode;
   }
   ///............................................................................................
+  ///
+  ///
+  ///.......................lower method is commented on 28 feb .................by rahul
+  Future<int> walletPostUpdateApi() async {
+    SharedPreferences p = await SharedPreferences.getInstance();
+    //p.setString("rrrrrrrrrr4567", "${_checkoutController.checkoutModel?.result?.totalCost.toString()}");
+    var  v=p.getString("rrrrrrrrrr4567");
+    print("object3&&&&&&&&&&&&&&&:${v}");
+    isLoading(true);
+    http.Response r = await ApiProvider.WalletPostUpdateApi(
+        UserId.text,
+        v,
+    );
+    if (r.statusCode == 200) {
+      ///TODO: we can navigate directly this page through this navigation with add to cart with Id.
+      // Get.to(
+      //       () => HomePagePractice(), //next page class
+      //   duration: Duration(
+      //       milliseconds: 300), //duration of transitions, default 1 sec
+      //   transition:
+      //
+      //   Transition.zoom,
+      // );
+    }else if (r.statusCode == 400) {
+      // Get.to(
+      //       () => Wallet(), //next page class
+      //   duration: Duration(
+      //       milliseconds: 300), //duration of transitions, default 1 sec
+      //   transition:
+      //
+      //   Transition.zoom,
+      // );
+      Get.snackbar('message', r.body);
+    }
+    isLoading(false);
+    //todo///////01/03
+    return r.statusCode;
+  }
+  ///............................................................................................
   TextEditingController UserId = TextEditingController();
   TextEditingController Money = TextEditingController();
+  TextEditingController walletAmount = TextEditingController();
 
  // TextEditingController amount = TextEditingController();
   @override
@@ -81,6 +123,7 @@ class WalletPostController extends GetxController {
     super.onInit();
     UserId;
     Money;
+    walletAmount;
     //amount;
   }
 
@@ -111,6 +154,14 @@ class WalletPostController extends GetxController {
 
     if (walletamountFormKey.currentState!.validate()) {
       walletPostApi();
+      walletPostUpdateApi();
+    }
+    walletamountFormKey.currentState!.save();
+  }
+  void checkupdateAmount() {
+
+    if (walletamountFormKey.currentState!.validate()) {
+      walletPostUpdateApi();
     }
     walletamountFormKey.currentState!.save();
   }

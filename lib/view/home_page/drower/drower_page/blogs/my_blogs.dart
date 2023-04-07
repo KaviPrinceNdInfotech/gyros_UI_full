@@ -151,9 +151,10 @@ class Blogss extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: size.height * 0.35,
+                              height: size.height * 0.38,
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
                                   itemCount:
                                       //4,
                                       _blogListController
@@ -169,10 +170,11 @@ class Blogss extends StatelessWidget {
                                           Padding(
                                             padding: EdgeInsets.all(5.0),
                                             child: Container(
-                                              height: size.height * 0.19,
+                                              height: size.height * 0.17,
                                               width: size.width * 0.4,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
+                                                border: Border.all(color: Colors.black),
                                                   image: DecorationImage(
                                                       image: NetworkImage(
                                                         base +
@@ -213,9 +215,11 @@ class Blogss extends StatelessWidget {
                                           Padding(
                                             padding: EdgeInsets.only(left: 7),
                                             child: Text(
+
                                               _blogListController.blogmodel!
                                                   .result![index].title
                                                   .toString(),
+
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 9.sp,

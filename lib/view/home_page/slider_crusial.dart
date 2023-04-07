@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
@@ -58,7 +59,9 @@ class MySlider extends StatelessWidget {
                     child: CarouselSlider.builder(
                       key: _sliderKey,
                       unlimitedMode: true,
-                      autoSliderTransitionTime: Duration(seconds: 2),
+                      autoSliderTransitionTime: Duration(seconds: 4),
+                      autoSliderDelay:Duration(seconds: 4),
+                      // autoSliderTransitionTime =  Duration(seconds: 2),
                       slideBuilder: (index) {
                         return Container(
                           height: 26.h,
@@ -67,20 +70,40 @@ class MySlider extends StatelessWidget {
                             height: size.height * 0.38,
                             width: size.width,
                             // height: 26.h,
-                            child: Image.network(
-                              base +
-                                  '${_homePageController.getsliderbaner?.bannerImageList![index].toString()}',
-                              fit: BoxFit.fitWidth,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Text(
-                                  'No Image',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.sp,
-                                  ),
-                                );
-                              },
+                            child: CachedNetworkImage(
+                              imageUrl: base + "${_homePageController.getsliderbaner?.bannerImageList![index].toString()}",fit: BoxFit.fitWidth,
+                              placeholder: (context, url) => SizedBox(
+                                height: 1.h,
+                                  width: 4.w,
+                                  child: Center(
+                                      child: Image.asset("lib/assets/asset/zif_loading6.gif"),
+                                      //CircularProgressIndicator()
+                                  )
+                              ),
+                              errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                             ),
+
+
+                            // FadeInImage.assetNetwork(
+                            //   placeholder: 'lib/assets/asset/zif_loading5.gif',fadeInCurve: Curves.linear,
+                            //   image: base +'${_homePageController.getsliderbaner?.bannerImageList![index].toString()}',fit: BoxFit.fitWidth,
+                            // ),
+
+                            ///
+                            // Image.network(
+                            //   base +
+                            //       '${_homePageController.getsliderbaner?.bannerImageList![index].toString()}',
+                            //   fit: BoxFit.fitWidth,
+                            //   errorBuilder: (context, error, stackTrace) {
+                            //     return Text(
+                            //       'No Image',
+                            //       style: TextStyle(
+                            //         fontWeight: FontWeight.bold,
+                            //         fontSize: 12.sp,
+                            //       ),
+                            //     );
+                            //   },
+                            // ),
                           ),
                         );
                       },

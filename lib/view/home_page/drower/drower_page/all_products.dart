@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -83,19 +84,19 @@ class AllProducts extends StatelessWidget {
               child: Container(
                 child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) =>  IndexPage()),
-                        // );
-                      },
-                      child: Icon(
-                        Icons.search,
-                        size: size.height * 0.035,
-                        color: Colors.green,
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     // Navigator.push(
+                    //     //   context,
+                    //     //   MaterialPageRoute(builder: (context) =>  IndexPage()),
+                    //     // );
+                    //   },
+                    //   child: Icon(
+                    //     Icons.search,
+                    //     size: size.height * 0.035,
+                    //     color: Colors.green,
+                    //   ),
+                    // ),
                     InkWell(
                       onTap: () {
                         Get.to(() => Cartproducts());
@@ -188,15 +189,29 @@ class AllProducts extends StatelessWidget {
                                             },
                                             child: Container(
                                               height: size.height * 0.38,
+                                              width: double.infinity,
                                               //color: Colors.red,
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                                 color: Colors.white,
-                                                image: DecorationImage(
-                                                    image: NetworkImage(base +
-                                                        '${_allProductController.allProductModel!.result![index].productImage.toString()}'),
-                                                    fit: BoxFit.fitHeight),
+                                                // image: DecorationImage(
+                                                //     image: NetworkImage(base +
+                                                //         '${_allProductController.allProductModel!.result![index].productImage.toString()}'),
+                                                //     fit: BoxFit.fitHeight),
+                                              ),
+                                              child: CachedNetworkImage(
+                                                imageUrl: base + "${_allProductController.allProductModel!.result![index].productImage.toString()}",fit: BoxFit.fitHeight,
+                                                placeholder: (context, url) => SizedBox(
+                                                    height: size.height * 0.38,
+                                                    width:size.width*99.22,
+                                                    //width: 4.w,
+                                                    child: Center(
+                                                      child: Image.asset("lib/assets/asset/zif_loading6.gif",fit: BoxFit.fill,height: size.height*0.17,),
+                                                      //CircularProgressIndicator()
+                                                    )
+                                                ),
+                                                errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                                               ),
                                             ),
                                           ),

@@ -103,8 +103,12 @@
 
 
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gyros_app/services/api_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import '../apiProviderImage.dart';
@@ -145,7 +149,7 @@ class ProductDetailController extends GetxController {
   TextEditingController title = TextEditingController();
   TextEditingController imagePath = TextEditingController();
   TextEditingController imagebase = TextEditingController();
-  //TextEditingController title = TextEditingController();
+  String productId = '';
   GlobalKey<FormState> reviewKey = GlobalKey<FormState>();
 
   var selectedPath = ''.obs;
@@ -154,6 +158,7 @@ class ProductDetailController extends GetxController {
     final pickedFiles = await ImagePicker().pickImage(source: imageSource);
     if (pickedFiles != null) {
       selectedPath.value = pickedFiles.path;
+      print("File Path ${pickedFiles.path}");
     } else {
       Get.snackbar("Error", "No image Selected",
           snackPosition: SnackPosition.BOTTOM,
@@ -165,6 +170,7 @@ class ProductDetailController extends GetxController {
 
   GetProductDetailModel? getProductDetailModel;
   void getProductDetailsApi(var id) async {
+    productId = id;
     Get.to(() => ItemDetailss());
     isLoading(true);
     getProductDetailModel = await ApiProviders.getProductDetails(id);
@@ -203,8 +209,8 @@ class ProductDetailController extends GetxController {
      //
      //    selectedPath.value
      // );
-
-    http.Response r = await ApiProviders.postReview(
+    final imageAsBase64 = base64Encode(await File(selectedPath.value).readAsBytes());
+    http.Response r = await ApiProvider.postReview(
         name.text,
         mobile.text,
         email.text,
@@ -215,10 +221,10 @@ class ProductDetailController extends GetxController {
         rating3.value,
         rating4.value,
         rating5.value,
-        // productid.text,
-        imagePath.text,
-        imagebase.text
-       // selectedPath.value
+        productId,
+        selectedPath.value.split('/').last,
+        imageAsBase64
+
     );
 
     if (r.statusCode == 200) {

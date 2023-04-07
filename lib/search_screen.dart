@@ -46,7 +46,8 @@ class SearchScreen extends StatelessWidget {
                   //width: double.infinity,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
-                          colors: <Color>[Color(0xff3a923b) ,Color(0xffb5d047) ]
+                          colors:
+                          <Color>[Color(0xff3a923b) ,Color(0xffb5d047) ]
                       )
                   ),
                   child: Stack(
@@ -64,6 +65,7 @@ class SearchScreen extends StatelessWidget {
                               child: SizedBox(
                                 height: size.height*0.1,
                                 width:  size.width*0.1,
+                                child: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.white,),
                                 // height: 40,
                                 // width: 40,
                                 // child: ElevatedButton(
@@ -82,7 +84,7 @@ class SearchScreen extends StatelessWidget {
                           ),
                           // Image.asset("lib/assets/app_icon/guser_logo.png")
                           Container(
-                            height: size.height*0.1,
+                            height: size.height*0.08,
                             width: size.width*0.8,
                             // height: 80,
                             // width: 100,
@@ -95,21 +97,21 @@ class SearchScreen extends StatelessWidget {
 
                       Padding(
                         padding:  EdgeInsets.only(
-                          top: 80 ,
-                          left: 40,
+                          top: 100 ,
+                          left: 20,
                           // top: 80 ,
                           // left: 40,
                         ),
                         child: Container(
                           height:  size.height * 0.06,
-                          width:  size.height * 0.40,
+                          width:  size.width * 0.90,
                           decoration: BoxDecoration(
                               color: Colors.white,
                               //border: Border.all(),
                               borderRadius: BorderRadius.circular(10)
                           ),
                           child: Padding(
-                            padding:  EdgeInsets.only(left: 8),
+                            padding:  EdgeInsets.only(left: 6,top: 6),
                             child: TextField(
                               onChanged: (value) => _controller.filterProducts(value),
                               decoration: InputDecoration(
@@ -189,32 +191,51 @@ class SearchScreen extends StatelessWidget {
                                           },
                                           child: Container(
                                             height: size.height * 0.1,
+                                            width: size.width*0.2,
+
                                             //height: 100,
-                                            child: Image.network(base +
-                                                '${_controller.foundProducts[index].productImage}'),
+                                            decoration: BoxDecoration(
+                                                //color: Colors.green,
+                                              // image: DecorationImage(
+                                              //   image: NetworkImage(base +
+                                              //       '${_controller.foundProducts[index].productImage}'),fit: BoxFit.fill
+                                              // )
+                                            ),
+                                            child:
+                                            Center(
+                                                child:FadeInImage.assetNetwork(
+                                                  placeholder: 'lib/assets/asset/zif_loading.gif',fadeInCurve: Curves.linear,
+                                                  image: base +'${_controller.foundProducts[index].productImage}',fit: BoxFit.fill,
+                                                ),
+                                            // Text('Loading....',style: GoogleFonts.aBeeZee(fontSize:
+                                            // size.width*0.03,color: Colors.white,fontWeight: FontWeight.w500),)
+
+
+                                            )
+                                            // Image.network(base +
+                                            //     '${_controller.foundProducts[index].productImage}',fit: BoxFit.fill,),
                                           ),
                                         ),
                                       ),
                                       SizedBox(
-                                        height: size.height * 0.02,
+                                        height: size.height * 0.017,
                                         // height: 10,
                                       ),
                                       Container(
                                         // height: 28,
                                         // width: 180,
-                                        height: size.height * 0.04,
-                                        width: size.height * 0.3,
+                                        //height: size.height * 0.04,
+                                        width: size.width * 0.65,
 
-                                        child: Center(
-                                          child: AutoSizeText(
-                                            "${_controller.foundProducts[index].productName}",
-                                            style: GoogleFonts.actor(
-                                              fontSize: 28,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black,
-                                            ),
-                                            maxLines: 2,
+                                        child: Text(
+                                        //AutoSizeText(
+                                          "${_controller.foundProducts[index].productName}",
+                                          style: GoogleFonts.actor(
+                                            fontSize: size.width*0.038,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black,
                                           ),
+                                          maxLines: 2,
                                         ),
                                       )
                                     ],

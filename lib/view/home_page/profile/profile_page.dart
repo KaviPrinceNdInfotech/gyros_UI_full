@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gyros_app/controllers/get_profile/get_profile_controller.dart';
 import 'package:gyros_app/privecy_policy/privecy_policyyy.dart';
 import 'package:gyros_app/shiping_policy/shipping_policyyy.dart';
 import 'package:gyros_app/view/botttom_nav_bar/bottom_nav_bar_controller.dart';
@@ -23,6 +24,8 @@ class ProfilePages extends StatelessWidget {
   ProfilePages({Key? key}) : super(key: key);
 
   NavController _navController = Get.put(NavController(), permanent: false);
+  GetProfileController _getProfileController = Get.put(GetProfileController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -372,6 +375,8 @@ class ProfilePages extends StatelessWidget {
                   color: Colors.black,
                 ),
                 onTap: () {
+                  _getProfileController.OrderHistoryApi();
+                  _getProfileController.update();
                   Get.to(() => OrderConfirmationPage());
                   //OrderPage());
                   // Navigator.push(context,
