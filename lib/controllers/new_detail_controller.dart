@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 // import 'package:gyros_app/models/newProductModel.dart';
 import 'package:gyros_app/models/product_detail_new_model.dart';
 import 'package:http/http.dart' as http;
+import '../models/view_review_ratting/view_ratting_reviewww.dart';
 import '../services/api_provider.dart';
 import '../view/model_cart_practice/widgets/item_details_pageee/item_details_catagary.dart';
 import '../view/model_cart_practice/widgets/item_details_pageee/new_detail_page.dart';
@@ -14,6 +16,9 @@ class NewController extends GetxController {
   RxInt selectedsingleimg = 0.obs;
   String productid = '';
   ProductDetailsModel? newModelid;
+  GetProductReview? getProductreview;
+
+
   RxInt qty = 1.obs;
   addQty() {
     qty = qty + 1;
@@ -49,6 +54,13 @@ class NewController extends GetxController {
     newModelid = await ApiProvider.newproductdetails(productid.toString());
     if (newModelid != null) {
       isLoading(false);
+      ///from here product id 13 april 2023 ...prince...
+      var prefs = GetStorage();
+      //saved id..........
+      //prefs.write("Id".toString(), json.decode(r.body)['Id']);
+      productid = prefs.read("Id").toString();
+      print('&&&&&&&&&&&&&&&&&&&&&&:${productid}');
+      ///
       Get.to(
             () => ItemDetailsss(productId: productid,), //next page class
         duration: Duration(
@@ -62,9 +74,25 @@ class NewController extends GetxController {
     }
   }
 
+
+
+  ///............................view rating review..................
+
+
+  void getreviewdetailApi() async {
+    isLoading(true);
+    getProductreview = await ApiProvider.viewreviewApi();
+    if (getProductreview != null) {
+      //Get.to(() => ItemDetailss());
+      isLoading(false);
+
+    }
+  }
   @override
   void onInit() {
     newproductbyIdApi();
+    getreviewdetailApi();
+    //getreviewdetailApi();
     super.onInit();
   }
 

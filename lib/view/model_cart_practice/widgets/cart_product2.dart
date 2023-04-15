@@ -476,6 +476,8 @@ import '../../../controllers/coupan_post_controller/coupan_apply_controller.dart
 import '../../../controllers/coupan_post_controller/coupan_post_controller.dart';
 import '../../../controllers/coupan_post_controller/coupan_text_controller.dart';
 import '../../../controllers/new_user_coupan_controller/new_user_coupan_controller.dart';
+import '../../botttom_nav_bar/bottom_nav_bar_controller.dart';
+import '../../botttom_nav_bar/bottom_navbar.dart';
 import '../viewss/adress_pagess/address_list/address_listss.dart';
 
 class Cartproducts extends StatelessWidget {
@@ -483,7 +485,9 @@ class Cartproducts extends StatelessWidget {
   TextEditingController code = TextEditingController();
   AddressListController _addressListController =
   Get.put(AddressListController());
-  final CartController controller = Get.put(CartController());
+  CartController _carttcontroller = Get.put(CartController());
+  //final CartController _listcardcontroller = Get.put(CartController());
+
   CoupanController _coupanController = Get.put(CoupanController());
   CoupanListController _coupanListController = Get.put(CoupanListController());
   CoupanPostController _coupanPostController = Get.put(CoupanPostController());
@@ -491,6 +495,8 @@ class Cartproducts extends StatelessWidget {
   CoupanApplyController _coupanApplyController = Get.put(CoupanApplyController());
   CoupanTextController _coupanTextController = Get.put(CoupanTextController());
   CheckoutController _checkoutController = Get.put(CheckoutController());
+  NavController _navController = Get.put(NavController());
+
   Cartproducts({Key? key}) : super(key: key);
 
   final datacount = GetStorage();
@@ -539,9 +545,9 @@ class Cartproducts extends StatelessWidget {
     return Scaffold(
       body:
       SafeArea(
-        child: Obx(() => (controller.isLoading.value)
+        child: Obx(() => (_carttcontroller.isLoading.value)
             ? Center(child: CircularProgressIndicator())
-            : controller.cartListModel?.result == null
+            : _carttcontroller.cartListModel?.result == null
             ? Center(child: Text("You have no item in your Cart"))
             : Container(
           height: size.height,
@@ -557,9 +563,11 @@ class Cartproducts extends StatelessWidget {
                   child: Row(
                     //mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
-                          Get.back();
+                          _navController.changeTabIndex(0);
+                          Get.to(() => NavBar());
+                          //Get.back();
                         },
                         child: Icon(
                           Icons.arrow_back_ios_outlined,
@@ -630,6 +638,7 @@ class Cartproducts extends StatelessWidget {
                 SizedBox(
                   height: 0.2.h,
                 ),
+
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: Container(
@@ -663,7 +672,7 @@ class Cartproducts extends StatelessWidget {
                                   gradient: MyTheme.gradient3,
                                 ),
                                 child: Center(
-                                  child: Text(controller.cartListModel!.totalItem.toString(),
+                                  child: Text(_carttcontroller.cartListModel!.totalItem.toString(),
                                     // "${controller.cartListModel?.totalItem.toString()}",
                                     style: GoogleFonts.poppins(
                                         color: Colors.white,
@@ -692,7 +701,7 @@ class Cartproducts extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                '₹${controller.cartListModel!.totalPrice.toString()}',
+                                '₹${_carttcontroller.cartListModel!.totalPrice.toString()}',
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   color: Colors.red.shade400,
@@ -841,7 +850,7 @@ class Cartproducts extends StatelessWidget {
                                                     child:
                                                     InkWell(
                                                       onTap: ()async{
-                                                        if(controller.cartListModel!.totalPrice >= 2000){
+                                                        if(_carttcontroller.cartListModel!.totalPrice >= 2000){
 
                                                          // _checkoutController.refresh();
                                                           //CallLoader.hideLoader();
@@ -865,10 +874,20 @@ class Cartproducts extends StatelessWidget {
                                                           // controller.CartListgApi();
                                                           // controller.update();
                                                           ///.......................
+
+
+
                                                           _firstCoupanPostController.postcoupanApi();
-                                                          controller.CartListgApi();
+                                                          //CallLoader.loader();
+
+                                                         // _carttcontroller.CartListgApi();
                                                           // CallLoader.hideLoader();
-                                                          controller.update();
+                                                         // _carttcontroller.update();
+                                                         // _checkoutController.checkoutModel?.result?.totalPrice.toString();
+                                                          _checkoutController.getcheckoutApi();
+                                                          _carttcontroller.update();
+
+                                                         // CallLoader.hideLoader();
 
                                                          // CallLoader.hideLoader();
                                                           ///
@@ -890,8 +909,8 @@ class Cartproducts extends StatelessWidget {
                                                       },
                                                       child: Container(
                                                         height: size.height*0.05,
-                                                        width: size.width*0.16,
-                                                        child: Center(child: Text('ApplyRR' , style: TextStyle(
+                                                        width: size.width*0.17,
+                                                        child: Center(child: Text('ApplyR' , style: TextStyle(
                                                             fontWeight: FontWeight.bold ,
                                                             color: Colors.green,
                                                             fontSize: 15
@@ -992,9 +1011,9 @@ class Cartproducts extends StatelessWidget {
                                                           // print("fdsgsdgsdgs: ${coupan.toString()}");
                                                           print("ffsgfhsbf: ${coupansecond}");
                                                           _firstCoupanPostController.postcoupanApi();
-                                                          controller.CartListgApi();
+                                                          _carttcontroller.CartListgApi();
                                                          // CallLoader.hideLoader();
-                                                          controller.update();
+                                                          _carttcontroller.update();
 
                                                           //_coupanPostController.Companycoupon.text;
                                                         },
@@ -1175,7 +1194,7 @@ class Cartproducts extends StatelessWidget {
 ///TODO: CART LIST ITEM ........................CARD
 
 class CartProductCard extends StatelessWidget {
-  final CartController controller = Get.find();
+  final CartController _carttcontroller = Get.find();
   CartProductCard({
     Key? key,
   }) : super(key: key);
@@ -1192,11 +1211,11 @@ class CartProductCard extends StatelessWidget {
           // height: size.height * 0.65,
             child:
             ListView.builder(
-                itemCount: controller.cartListModel?.result.length,
+                itemCount: _carttcontroller.cartListModel?.result.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return Obx(
-                        () => (controller.isLoading.value)
+                        () => (_carttcontroller.isLoading.value)
                         ? Center(child: CircularProgressIndicator())
                     // : controller.cartListModel?.result== null
                     //     ? Center(
@@ -1239,7 +1258,7 @@ class CartProductCard extends StatelessWidget {
                                     //     fit: BoxFit.cover),
                                   ),
                                   child: CachedNetworkImage(
-                                    imageUrl: base + "${controller.cartListModel?.result[index].image.toString()}",fit: BoxFit.cover,
+                                    imageUrl: base + "${_carttcontroller.cartListModel?.result[index].image.toString()}",fit: BoxFit.cover,
                                     placeholder: (context, url) => SizedBox(
                                         height: size.height * 0.40,
                                         width:size.width,
@@ -1266,7 +1285,7 @@ class CartProductCard extends StatelessWidget {
                                     SizedBox(
                                       width: size.width * 0.55,
                                       height: size.height * 0.1,
-                                      child: Text("${controller.cartListModel?.result[index].productName.toString()}",
+                                      child: Text("${_carttcontroller.cartListModel?.result[index].productName.toString()}",
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         style: GoogleFonts.anekBangla(
@@ -1280,7 +1299,7 @@ class CartProductCard extends StatelessWidget {
                                     ),
                                     Row(
                                       children: [
-                                        Text("₹${controller.cartListModel?.result[index].price.toString()}",
+                                        Text("₹${_carttcontroller.cartListModel?.result[index].price.toString()}",
                                           style:  TextStyle(
                                             decoration: TextDecoration.lineThrough,
                                             decorationStyle: TextDecorationStyle
@@ -1300,7 +1319,7 @@ class CartProductCard extends StatelessWidget {
                                         ),
                                         SizedBox(width: size.width*0.02,),
                                         Text(
-                                          "₹${controller.cartListModel?.result[index].finalAmount.toString()
+                                          "₹${_carttcontroller.cartListModel?.result[index].finalAmount.toString()
                                           //product.price.toString()
                                           }",
                                           style: GoogleFonts.anekBangla(
@@ -1330,8 +1349,8 @@ class CartProductCard extends StatelessWidget {
                                         //buttonPosition: Position.fullBottom,
                                         depth: 2,
                                         onTapUp: () {
-                                          controller.minuscartApi(
-                                              controller.cartListModel?.result[index].id.toString());
+                                          _carttcontroller.minuscartApi(
+                                              _carttcontroller.cartListModel?.result[index].id.toString());
                                         },
                                         border: Border.all(
                                           color: Colors.black12,
@@ -1361,7 +1380,7 @@ class CartProductCard extends StatelessWidget {
                                               shape: BoxShape.circle,
                                               color: Colors.white),
                                           child: Center(
-                                            child: Text("${controller.cartListModel?.result[index].count}",
+                                            child: Text("${_carttcontroller.cartListModel?.result[index].count}",
                                               style: GoogleFonts.anekBangla(color: Colors.black,fontSize: 11.sp,fontWeight: FontWeight.bold),
                                             ),
                                           ),
@@ -1375,7 +1394,7 @@ class CartProductCard extends StatelessWidget {
                                         rightShadowColor: Colors.green,
                                         depth: 2,
                                         onTapUp: () {
-                                          controller.pluscartApi(controller.cartListModel?.result[index].id.toString());
+                                          _carttcontroller.pluscartApi(_carttcontroller.cartListModel?.result[index].id.toString());
                                         },
                                         border: Border.all(
                                           color: Colors.green,

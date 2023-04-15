@@ -19,6 +19,7 @@ import 'package:gyros_app/view/botttom_nav_bar/bottom_nav_bar_controller.dart';
 import 'package:gyros_app/view/cart_new_section/product_details/product_detail_controllerss/cart_new_controler.dart';
 import 'package:gyros_app/view/cart_new_section/product_details/product_detail_controllerss/fav_counter_controller.dart';
 import 'package:gyros_app/view/home_page/home_page_controller.dart';
+import 'package:gyros_app/view/intro_screen/intro_video/intro_controller.dart';
 import 'package:gyros_app/view/login_page/login_otp/login_otp_timer_phone_email_controller.dart';
 import 'package:gyros_app/view/login_page/login_with_email/login_email_controller.dart';
 import 'package:gyros_app/view/splash_screenss/splash_screen.dart';
@@ -59,12 +60,10 @@ import 'models/list_of_cart_model_api.dart';
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-   // Get.lazyPut(() => AllProductModel());
-    Get.lazyPut(() => GiftcardModel());
-    //Get.lazyPut(() => BestSellerModel());
-    // Get.lazyPut(() => CartListModel());
-   // Get.lazyPut(() => CartListModel());
-    Get.lazyPut(() => CartNewController());
+  // Get.lazyPut(() => AllProductModel());
+
+    Get.lazyPut(() =>IntroVideoBoxController());
+
     Get.lazyPut(() => FavCounterController());
     Get.lazyPut(() => NavController());
     Get.lazyPut(() => RozarPayController());
@@ -107,6 +106,11 @@ class MyHttpOverrides extends HttpOverrides {
     Get.lazyPut(() => CoupanPostController());
     Get.lazyPut(() => InvoiceController());
     Get.lazyPut(() => CartController());
+    Get.lazyPut(() => GiftcardModel());
+    //Get.lazyPut(() => BestSellerModel());
+    // Get.lazyPut(() => CartListModel());
+    // Get.lazyPut(() => CartListModel());
+    Get.lazyPut(() => CartNewController());
 
     return super.createHttpClient(context)
       ..badCertificateCallback =
@@ -117,7 +121,7 @@ class MyHttpOverrides extends HttpOverrides {
 Future<void> main() async {
   // await Firebase.initializeApp(
   //   //options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  //  );
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -139,9 +143,9 @@ class MyApp extends StatelessWidget {
   // FavCounterController _favCounterController = Get.put(FavCounterController());
 
   MyApp({Key? key}) : super(key: key);
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-  FirebaseAnalyticsObserver(analytics: analytics);
+   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+   static FirebaseAnalyticsObserver observer =
+   FirebaseAnalyticsObserver(analytics: analytics);
 
   // This widget is the root of your application.
   @override

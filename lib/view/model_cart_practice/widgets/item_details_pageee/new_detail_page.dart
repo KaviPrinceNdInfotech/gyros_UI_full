@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:gyros_app/view/model_cart_practice/controllers/cart_controllersss.dart';
+import 'package:gyros_app/view/review_rating_view/view_review_rating.dart';
 import 'package:gyros_app/widgets/circular_loader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rating_dialog/rating_dialog.dart';
@@ -97,11 +98,16 @@ final List<String> richa = [
     Size size = MediaQuery.of(context).size;
     RxBool unfold = true.obs;
     var base = 'https://api.gyros.farm/Images/';
+    ///
+
+    ///Todo: this is the main thing to how to pass product id in next screen abh bhiya kumar prince 8 april 2023....
     _controller.productId = "${
       _newProductByIdController.newModelid!.productModelApi.id
     }";
     print("PRODUCT ID ${_newProductByIdController
         .newModelid!.productModelApi.id}");
+
+    ///todo: it is last of how to pass product id in project..........
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -159,8 +165,7 @@ final List<String> richa = [
                   SizedBox(
                     height: size.height*0.00,
                   ),
-                  Obx(
-                        () => Container(
+                  Container(
                       height: size.height * 0.40,
                       width: size.width,
                       decoration: BoxDecoration(
@@ -193,7 +198,6 @@ final List<String> richa = [
                             errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.red,),
                           ),
                     ),
-                  ),
                   SizedBox(
                     height: size.height * 0.01,
                   ),
@@ -403,9 +407,11 @@ final List<String> richa = [
                           ),
                         ),
                       ),
+
                       SizedBox(
                         width: size.width * 0.01,
                       ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -524,20 +530,20 @@ final List<String> richa = [
                             addReview();
                           },
                           child: Container(
-                            height: size.height * 0.050,
-                            width: 30.w,
+                            height: size.height * 0.040,
+                            width: 29.w,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: RaisedGradientButton(
                               //height: 3.3.h,
                               //width: 23.9.w,
                               child: Text(
-                                'Review',
+                                'Add Review',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 15.sp),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 11.sp),
                               ),
                               gradient: LinearGradient(
                                 colors: <Color>[
@@ -1058,10 +1064,10 @@ final List<String> richa = [
 
                                         ///description
                                         Container(
-                                          height: size.height *
-                                              0.15,
+                                          // height: size.height *
+                                          //     0.12,
                                           width:
-                                          size.width * 0.5,
+                                          size.width * 0.47,
                                           child: Text(
                                             _standOutController
                                                 .getstandoutpoints!
@@ -1071,7 +1077,7 @@ final List<String> richa = [
                                             overflow:
                                             TextOverflow
                                                 .ellipsis,
-                                            maxLines: 8,
+                                            maxLines: 10,
                                             style: TextStyle(
                                               fontSize: 9.sp,
                                               color:
@@ -1107,7 +1113,6 @@ final List<String> richa = [
                                   'Have You Tried These?',
                                   style: TextStyle(
                                     color: Colors.black,
-
                                     //color: Theme.of(context).colorScheme.onPrimary,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14.sp,
@@ -1119,9 +1124,12 @@ final List<String> richa = [
                         ),
 
                         ///Hello
+                        SizedBox(
+                          height: 0.001,
+                        ),
                         Container(
                           width: size.width ,
-                            height: size.height * 0.425,
+                            height: size.height * 0.325,
                             decoration: BoxDecoration(
 //color: Colors.green
                               // color: Color(0xffE8F9FD)
@@ -1260,8 +1268,40 @@ final List<String> richa = [
                                   );
                                 })),
 
+                        ///view review.............................12 april 2023...prince.
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            height: size.height * 0.038,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              //color: Color(0xffF6F7DD),
+                              color: MyTheme.containergradient,
+                              //gradient: MyTheme.gradient2,
+                            ),
+                            //color: MyTheme.loginPageBoxColor,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.w, vertical: 0.4.h),
+                              child: Center(
+                                child: Text(
+                                  'View reviews',
+                                  style: TextStyle(
+                                    color: Colors.black,
+
+                                    //color: Theme.of(context).colorScheme.onPrimary,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        ViewReviewRating(),
+
                         SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
 
                         ///add product.................
@@ -1513,7 +1553,8 @@ final List<String> richa = [
                           color: Colors.white),
                     ),
                   ),
-                )
+                ),
+
               ],
             ),
           ),
@@ -1605,9 +1646,15 @@ final List<String> richa = [
           //     ],
           //   ),
           // ),
-        ])));
+        ])
+        )
+    );
+
+
     // );
   }
+
+  ///Todo: add review...................prince
 
   addReview() {
     Get.dialog(

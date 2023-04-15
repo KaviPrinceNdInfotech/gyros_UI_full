@@ -29,10 +29,25 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
         Duration(seconds: 6),
         token != ''
-            ? () => Navigator.pushReplacement(
+            ? () =>
+            // Navigator.pushAndRemoveUntil(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => NavBar()),
+            //       (Route<dynamic> route) => false,
+            // )
+
+            // Navigator.pushAndRemoveUntil(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => NavBar(), maintainState: true),
+            //         (Route<dynamic> route) => false)
+        ///
+            Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => NavBar()))
-            : () => Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => LoginPage())));
+            : () =>
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginPage()))
+    );
   }
 
   ///TODO: _navController.tabindex(0);

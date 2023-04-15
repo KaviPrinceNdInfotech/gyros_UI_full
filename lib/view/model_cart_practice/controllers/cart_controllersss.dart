@@ -68,18 +68,20 @@ class CartController extends GetxController {
     if (cartListModel != null) {
       getcheckoutApi();
 
-
       ///TODO: we can navigate directly this page through this navigation with add to cart with Id.
-      Get.to(
-            () => Cartproducts(), //next page class
-        duration: Duration(
-            milliseconds: 300), //duration of transitions, default 1 sec
-        transition:
-        // Transition.leftToRight //transition effect
-        // Transition.fadeIn
-        //Transition.size
-        Transition.zoom,
-      );
+      ///todo: prince ,,this is the main thing to navigate cart page before home page.corrected by  april 15 2023
+      // Get.to(
+      //       () => Cartproducts(), //next page class
+      //   duration: Duration(
+      //       milliseconds: 300), //duration of transitions, default 1 sec
+      //   transition:
+      //   // Transition.leftToRight //transition effect
+      //   // Transition.fadeIn
+      //   //Transition.size
+      //   Transition.zoom,
+      // );
+      ///todo:end  prince ,,this is the main thing to navigate cart page before home page.corrected by  april 15 2023
+
       //Get.to(() => ItemDetailss());
       isLoading(false);
 

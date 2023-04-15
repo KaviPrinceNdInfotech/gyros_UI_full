@@ -47,6 +47,7 @@ import '../models/our_story_model.dart';
 import '../models/productDetailsModel.dart';
 import '../models/stand_out_model.dart';
 import '../models/tried_model.dart';
+import '../models/view_review_ratting/view_ratting_reviewww.dart';
 import '../models/wallet_model/wallet_model.dart';
 import '../widgets/circular_loader.dart';
 
@@ -56,7 +57,7 @@ class ApiProvider {
   static String Token = '';
   static String categoryid = '';
   static String catid = '';
-  static String productid = '';
+  static String productid = ''.toString();
   static String orderid = '';
   static String Id = ''.toString();
   static String coupan1 = ''.toString();
@@ -64,18 +65,18 @@ class ApiProvider {
   static String coupanfirst = ''.toString();
   static String amount = ''.toString();
   static String Companycoupon = '';
-  static String prodid = '';
+  //static String prodid = '';
   static String cartlistid = '';
   static String addressid = '';
   static String Message = "";
-  static String prodId = '';
-  static String PrdId = '';
+  //static String prodId = '';
+  static String productId = ''.toString();
   static String Invoice = ''.toString();
   static String invoiceget = ''.toString();
   static String code = ''.toString();
   static String coupanget = ''.toString();
   //coupanget
-final box = GetStorage();
+  final box = GetStorage();
 
   ///TODO: here we have to add different api in this page...........
 
@@ -98,6 +99,7 @@ final box = GetStorage();
       };
       print(body);
       print(headers);
+      print(url);
 
       http.Response r =
       await http.post(Uri.parse(url), body: body, headers: headers);
@@ -512,22 +514,22 @@ final box = GetStorage();
     }
   }
 
- ///pdf invoice
+  ///pdf invoice
   static invoiceApi(var Invoice) async {
 
     var prefs = GetStorage();
-  var  invoiceget = prefs.read("rahul").toString();
+    var  invoiceget = prefs.read("rahul").toString();
     print('mdsjjjjhdgl:${invoiceget}');
     //var url = baseUrl + 'api/Order/InvoiceV1/2023BNW8';
-        var url = baseUrl + 'api/Order/InvoiceV1/$invoiceget';
+    var url = baseUrl + 'api/Order/InvoiceV1/$invoiceget';
     try {
       http.Response r = await http.get(Uri.parse(url));
-     //  var prefs = GetStorage();
-     //  //saved invoice..........
-     //  Invoice = prefs.write("Invoice".toString(), json.decode(r.body)['Invoice']);
-     //  print('bhngbnhl:${Invoice.toString()}');
-     //  Invoice = prefs.read("Invoice").toString();
-     // print('mdsflfdgl:${Invoice.toString()}');
+      //  var prefs = GetStorage();
+      //  //saved invoice..........
+      //  Invoice = prefs.write("Invoice".toString(), json.decode(r.body)['Invoice']);
+      //  print('bhngbnhl:${Invoice.toString()}');
+      //  Invoice = prefs.read("Invoice").toString();
+      // print('mdsflfdgl:${Invoice.toString()}');
 
       print(r.body.toString());
       if (r.statusCode == 200) {
@@ -696,14 +698,14 @@ final box = GetStorage();
 
 
 
- /// Post coupan api original
+  /// Post coupan api original
   static PostCoupanApi(var Companycoupon, var UserId) async {
     SharedPreferences pref =  await SharedPreferences.getInstance() ;
-     var coupan2 =  pref.getString('coupan_apply');
-     print("jkhgkdjg: ${coupan2}");
+    var coupan2 =  pref.getString('coupan_apply');
+    print("jkhgkdjg: ${coupan2}");
     var url = baseUrl + 'api/ProductApi/EmployeeDiscountCoupon';
     var body = {
-     // 'Companycoupon': Companycoupon,
+      // 'Companycoupon': Companycoupon,
       'Companycoupon': "$coupan2",
       'UserId': "$Id",
     };
@@ -718,7 +720,7 @@ final box = GetStorage();
       _checkoutController.getcheckoutApi();
 
       Get.snackbar('Success', '${r.body.toString()}',
-      colorText: Colors.red.shade900);
+          colorText: Colors.red.shade900);
       var prefs = GetStorage();
       //saved id..........
       Id = prefs.read("Id").toString();
@@ -735,9 +737,9 @@ final box = GetStorage();
       return r;
     }
   }
-/// Post coupon textfield
+  /// Post coupon textfield
   static PostCoupanTextFieldApi(var Companycoupon, var UserId) async {
- var   textfield = Companycoupon.toString();
+    var   textfield = Companycoupon.toString();
     var url = baseUrl + 'api/ProductApi/EmployeeDiscountCoupon';
     var body = {
       'Companycoupon': "$textfield",
@@ -800,58 +802,58 @@ final box = GetStorage();
     }
   }
 
- //  static PostCoupanApi(
- //      var Companycoupon,
- //      var UserId,
- //      ) async {
- //    try {
- //      // var prefs = GetStorage();
- //      // Id = prefs.read("Id").toString();
- //      // print('&&&&&&&&&&&&&&&&&&&&&&88999ppppp:${Id}');
- //
- //
- //      var url = baseUrl + 'api/ProductApi/EmployeeDiscountCoupon';
- //      var body = {
- //        // "Companycoupon": Companycoupon,
- //        "Companycoupon": Companycoupon,
- //        "UserId": '${Id}',
- //        // "Companycoupon": 'Gyros87110',
- //        // "UserId": '213',
- //      };
- //      print(body);
- //      http.Response r = await http.post(
- //        Uri.parse(url), body: body,
- //        //headers: headers
- //      );
- //      print(r.body);
- //      if (r.statusCode == 200) {
- //        print("hvbdjhg00bjshfks: ${Companycoupon}");
- //        var prefs = GetStorage();
- //        //saved id..........
- //       // prefs.write("Id".toString(), json.decode(r.body)['Id']);
- //        Id = prefs.read("Id").toString();
- //        print('&&&&&&&&&&&&&&&&&&&&&&:${Id}');
- //
- //        //saved coupan.........
- //        // prefs.write("Companycoupon".toString(), json.decode(r.body)['Companycoupon']);
- //        // Companycoupon = prefs.read("Companycoupon").toString();
- //        // print('&&&&44444444444&:${Companycoupon}');
- //
- //        prefs.write("Companycoupon".toString(), json.decode(r.body)['Companycoupon']);
- //        Companycoupon = prefs.read("Companycoupon").toString();
- //        print(Companycoupon);
- //        return r;
- //      } else {
- //        Get.snackbar('Error', 'Address not added');
- //        return r;
- //      }
- //    } catch (e) {
- //      print('Error');
- //      print(e.toString());
- //    }
- //  }
+  //  static PostCoupanApi(
+  //      var Companycoupon,
+  //      var UserId,
+  //      ) async {
+  //    try {
+  //      // var prefs = GetStorage();
+  //      // Id = prefs.read("Id").toString();
+  //      // print('&&&&&&&&&&&&&&&&&&&&&&88999ppppp:${Id}');
+  //
+  //
+  //      var url = baseUrl + 'api/ProductApi/EmployeeDiscountCoupon';
+  //      var body = {
+  //        // "Companycoupon": Companycoupon,
+  //        "Companycoupon": Companycoupon,
+  //        "UserId": '${Id}',
+  //        // "Companycoupon": 'Gyros87110',
+  //        // "UserId": '213',
+  //      };
+  //      print(body);
+  //      http.Response r = await http.post(
+  //        Uri.parse(url), body: body,
+  //        //headers: headers
+  //      );
+  //      print(r.body);
+  //      if (r.statusCode == 200) {
+  //        print("hvbdjhg00bjshfks: ${Companycoupon}");
+  //        var prefs = GetStorage();
+  //        //saved id..........
+  //       // prefs.write("Id".toString(), json.decode(r.body)['Id']);
+  //        Id = prefs.read("Id").toString();
+  //        print('&&&&&&&&&&&&&&&&&&&&&&:${Id}');
+  //
+  //        //saved coupan.........
+  //        // prefs.write("Companycoupon".toString(), json.decode(r.body)['Companycoupon']);
+  //        // Companycoupon = prefs.read("Companycoupon").toString();
+  //        // print('&&&&44444444444&:${Companycoupon}');
+  //
+  //        prefs.write("Companycoupon".toString(), json.decode(r.body)['Companycoupon']);
+  //        Companycoupon = prefs.read("Companycoupon").toString();
+  //        print(Companycoupon);
+  //        return r;
+  //      } else {
+  //        Get.snackbar('Error', 'Address not added');
+  //        return r;
+  //      }
+  //    } catch (e) {
+  //      print('Error');
+  //      print(e.toString());
+  //    }
+  //  }
 
- // First Purchase banner gyros  api gyros 8 api.....................
+  // First Purchase banner gyros  api gyros 8 api.....................
 
   static FirstPurchaseApi() async {
     var url = baseUrl + 'api/AdminApi/Specialoffer';
@@ -899,7 +901,7 @@ final box = GetStorage();
       http.Response r = await http.get(Uri.parse(url));
       print(r.body.toString());
       if (r.statusCode == 200) {
-      //  Get.snackbar('Sucess', 'Coupon Apply Sucessfully');
+        //  Get.snackbar('Sucess', 'Coupon Apply Sucessfully');
 
         var prefs = GetStorage();
         //saved id..........
@@ -944,7 +946,7 @@ final box = GetStorage();
   ///about the product api...............................changed 2
   static AboutTheProductApi(var productid) async {
 
-   // var url = baseUrl + 'api/AdminApi/AboutProduct/$productid ';
+    // var url = baseUrl + 'api/AdminApi/AboutProduct/$productid ';
     var url = baseUrl + 'api/AdminApi/AboutProduct/69';
     try {
       http.Response r = await http.get(Uri.parse(url));
@@ -982,44 +984,46 @@ final box = GetStorage();
 
 
   ///invoice api
- //  static InvoiceApi() async {
- //    var prefs = GetStorage();
- //   // prefs.write("Id".toString(), json.decode(r.body)['Id']);
- //    Invoice = prefs.read("Invoice").toString();
- //    print('&&&&999999: ${Invoice}');
- //     var url = baseUrl + 'api/Order/InvoiceV1/2023BNW7';
- //    //var url = baseUrl + 'api/Order/InvoiceV1/$Invoice';
- //    try {
- //      http.Response r = await http.get(Uri.parse(url));
- //
- //      // var prefs = GetStorage();
- //      // prefs.write("Invoice".toString(), json.decode(r.body)['Invoice']);
- //      // Invoice = prefs.read("Invoice").toString();
- //      // print('&&&&&&&&&&&&:${Invoice}');
- //      print(r.body.toString());
- //      if (r.statusCode == 200) {
- //
- // //        var prefs = GetStorage();
- // //        //saved id..........
- // //        //prefs.write("Invoice".toString(), json.decode(r.body)['Invoice']);
- // //        Invoice = prefs.read("Invoice").toString();
- // // print('&&gjhjkh&&&:${Invoice}');
- //        InvoiceModel invoicelist = invoiceModelFromJson(r.body);
- //        print('&&&&&&&&&&&&&&&&&&&&&&: ${invoicelist}');
- //        return invoicelist;
- //      }
- //    } catch (e) {
- //      return;
- //    }
- //  }
+  //  static InvoiceApi() async {
+  //    var prefs = GetStorage();
+  //   // prefs.write("Id".toString(), json.decode(r.body)['Id']);
+  //    Invoice = prefs.read("Invoice").toString();
+  //    print('&&&&999999: ${Invoice}');
+  //     var url = baseUrl + 'api/Order/InvoiceV1/2023BNW7';
+  //    //var url = baseUrl + 'api/Order/InvoiceV1/$Invoice';
+  //    try {
+  //      http.Response r = await http.get(Uri.parse(url));
+  //
+  //      // var prefs = GetStorage();
+  //      // prefs.write("Invoice".toString(), json.decode(r.body)['Invoice']);
+  //      // Invoice = prefs.read("Invoice").toString();
+  //      // print('&&&&&&&&&&&&:${Invoice}');
+  //      print(r.body.toString());
+  //      if (r.statusCode == 200) {
+  //
+  // //        var prefs = GetStorage();
+  // //        //saved id..........
+  // //        //prefs.write("Invoice".toString(), json.decode(r.body)['Invoice']);
+  // //        Invoice = prefs.read("Invoice").toString();
+  // // print('&&gjhjkh&&&:${Invoice}');
+  //        InvoiceModel invoicelist = invoiceModelFromJson(r.body);
+  //        print('&&&&&&&&&&&&&&&&&&&&&&: ${invoicelist}');
+  //        return invoicelist;
+  //      }
+  //    } catch (e) {
+  //      return;
+  //    }
+  //  }
   //sub flash sale product_by_id  gyros api 10.....................................
 
   static getproductdetails(var productid) async {
     var url = baseUrl + 'api/AdminApi/FlaseSaleSubList/$productid';
 
+
     try {
       http.Response r = await http.get(Uri.parse(url));
       print(r.body.toString());
+      print(url);
       if (r.statusCode == 200) {
         FlashSaleProductDetailsModel productdetailsbyid =
         flashSaleProductDetailsModelFromJson(r.body);
@@ -1149,7 +1153,7 @@ final box = GetStorage();
 
 
 
-///Todo:from here wallet section in api...................................................
+  ///Todo:from here wallet section in api...................................................
   ///wallet post api..........................................wallet......section.....
   static WalletPostApi(var UserId, var Money) async {
     var url = baseUrl + 'api/AdminApi/AddWalletMoney';
@@ -1176,11 +1180,11 @@ final box = GetStorage();
     print(r.statusCode);
 
     if (r.statusCode == 200) {
-     //  var prefs = GetStorage();
-     // // saved id..........
-     //  prefs.write("Id".toString(), json.decode(r.body)['Id']);
-     //  Id = prefs.read("Id").toString();
-     //  print('kjkjkljjkl:${Id}');
+      //  var prefs = GetStorage();
+      // // saved id..........
+      //  prefs.write("Id".toString(), json.decode(r.body)['Id']);
+      //  Id = prefs.read("Id").toString();
+      //  print('kjkjkljjkl:${Id}');
       // Get.snackbar('Sucess', 'Added cart Sucessfully');
       return r;
     } else if (r.statusCode == 200) {
@@ -1272,6 +1276,8 @@ final box = GetStorage();
     //saved id..........
     final userId = prefs.read("Id").toString();
     print('&&&&&&&&&&&&&&&&&&&&&&okoko:${Id}');
+    print(productId);
+    print(url);
 
     token = prefs.read("token").toString();
     print('&&&&&&&&&&&&&&&&&&&&&&okok:${token}');
@@ -1310,6 +1316,7 @@ final box = GetStorage();
     //saved id..........
 
     print('&&&&&&&&&&&&&&&&&&&&&&okoko:${Id}');
+    print (url);
 
     token = prefs.read("token").toString();
     print('&&&&&&&&&&&&&&&&&&&&&&okok:${token}');
@@ -1523,7 +1530,7 @@ final box = GetStorage();
     if (r.statusCode == 200) {
       var data = jsonDecode(r.body.toString());
       if (r.statusCode == 200) {
-       // Get.snackbar('message', "Delete Successfully");
+        // Get.snackbar('message', "Delete Successfully");
       } else {
         Get.snackbar('message', data["error"]);
       }
@@ -1759,7 +1766,7 @@ final box = GetStorage();
       if (r.statusCode == 200) {
         CheckoutModel checkoutModel = checkoutModelFromJson(r.body);
         print("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR123: ${checkoutModel.result?.totalCost}");
-       prefs.write("totalCostR", checkoutModel.result?.totalCost);  // used in cart_product2
+        prefs.write("totalCostR", checkoutModel.result?.totalCost);  // used in cart_product2
         return checkoutModel;
       }
     } catch (error) {
@@ -1781,7 +1788,7 @@ final box = GetStorage();
       print(r.body.toString());
       if (r.statusCode == 200) {
         OrderHistoryModel orderHistoryModel = orderHistoryModelFromJson(r.body);
-       var rahul= prefs.write("rahul", orderHistoryModel.result?[0].invoice);
+        var rahul= prefs.write("rahul", orderHistoryModel.result?[0].invoice);
         print("###############################: ${rahul}");
         return orderHistoryModel;
       }
@@ -1797,13 +1804,13 @@ final box = GetStorage();
     var prefs = GetStorage();
     Id = prefs.read("Id").toString();
     print('&&&&&&&&&&&&&&&&&&&&&&Id:${Id}');
-   token = prefs.read("token").toString();
-   final headers = {'Authorization': 'Bearer $token'};
+    token = prefs.read("token").toString();
+    final headers = {'Authorization': 'Bearer $token'};
     var url = baseUrl + 'api/Order/Orders/149';
     http.Response r = await http.post(Uri.parse(url), headers: headers,
-    body:{
-      "id": "$Id"
-    });
+        body:{
+          "id": "$Id"
+        });
     print("response##############: ${r.body.toString()}");
     if (r.statusCode == 200) {
       return r;
@@ -2372,7 +2379,7 @@ final box = GetStorage();
   // }
 
   //add bank details..................................................................
-///
+  ///
   // static addbankinApi(
   //     var accHolderName,
   //     var bankname,
@@ -2724,6 +2731,11 @@ final box = GetStorage();
       print(r.statusCode);
 
       if (r.statusCode == 200) {
+        var prefs = GetStorage();
+        //saved id..........
+        prefs.write("Id".toString(), json.decode(r.body)['Id']);
+        Id = prefs.read("Id").toString();
+        print('&&&&&&&&&&&&&&&&&&&&&&9898980reviewproductttt:${Id}');
         return r;
       } else {
         Get.snackbar('Error', ' Fail');
@@ -2740,6 +2752,7 @@ final box = GetStorage();
 
 
   static postReview(
+
       var name,
       var mobile,
       var email,
@@ -2761,44 +2774,35 @@ final box = GetStorage();
       'Email': '$email',
       'Description': '$description',
       'Title': '$title',
-      'Rating1': '$rating1',
-      'Rating2': '$rating2',
-      'Rating3': '$rating3',
-      'Rating4': '$rating4',
-      'Rating5': '$rating5',
+      'Rating1': rating1?"1":"0",
+      'Rating2': rating2?"1":"0",
+      'Rating3': rating3?"1":"0",
+      'Rating4': rating4?"1":"0",
+      'Rating5': rating5?"1":"0",
       'ProductId': '$ProductId',
       'ImageName': '$ImageName',
       'ImageBase': '$imagebase'
 
     };
 
-
-    print(name);
-    print(email);
-    print(title);
-    print(description);
-    print(mobile);
-    print(rating1);
-    print(rating2);
-    print(rating3);
-    print(rating4);
-    print(rating5);
-    print(ProductId);
-    print(ImageName);
     try {
       var url = baseUrl + '/api/AdminApi/AddReview';
       var r = await http.post(Uri.parse(url),body:body );
-      print(body);
-      print(r.statusCode);
-      print(r.body);
       if (r.statusCode == 200) {
+        print("###3###3####1: ${r.body}");
+        var prefs = GetStorage();
+      // var  abc= json.decode(r.body)['result']['ProductId'];
+      // print("###3###3####123: ${abc}");
+       // prefs.write("ProductId", );
+       // ProductId = prefs.read("ProductId").toString();
+       // print('&&&&&&&&&&&&&&&&&&&&&&9898980reviewproductttt:${ProductId}');
         return r;
-
       } else {
         CallLoader.hideLoader();
         Get.snackbar('Error', r.body);
         return r;
       }
+
     } catch (e) {
       print('Error');
       print(e.toString());
@@ -2806,5 +2810,35 @@ final box = GetStorage();
 
 
   }
-///
+  ///view review add this.....
+
+  ///new detail model api..........detail page 12 april 2023..........okoko.....prince
+  ///
+  ///
+
+  static viewreviewApi() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var productid=pref.getString("##########165");
+    print("&&&&&&&&&&&&&&&&&&&#########123: ${productid}");
+
+    var url = 'https://api.gyros.farm/api/AdminApi/ViewReview/$productid';
+    print('&&&&&&&&&&&&&&&&&&&&&&okoko:${productid}');
+    print('&&&&&&&&&&&&&&&&&&&&&&:${productid}');
+
+    //var url = baseUrl + 'api/AdminApi/SubCategoryFullDescriptions/69';
+    print("hfgvjdfkdfdprinccceeeeeeeelll: ${productid}");
+    print("uuuuurl: ${url}");
+    try {
+      http.Response r = await http.get(Uri.parse(url));
+      print(r.body.toString());
+      if (r.statusCode == 200) {
+        GetProductReview? viewreviewbyid = getProductReviewFromJson(r.body);
+        print("hbvcjvkjdj: ${viewreviewbyid.result[0].productId}");
+        return viewreviewbyid;
+      }
+    } catch (error) {
+      return;
+    }
+  }
+
 }

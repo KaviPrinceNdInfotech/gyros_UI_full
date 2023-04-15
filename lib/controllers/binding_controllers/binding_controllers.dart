@@ -24,6 +24,7 @@ import 'package:gyros_app/controllers/wallet/wallet_controller.dart';
 import 'package:gyros_app/controllers/wallet_rozar_pay/wallet_post_controller.dart';
 import 'package:gyros_app/controllers/wallet_rozar_pay/wallet_rozar_pay_controller.dart';
 import 'package:gyros_app/view/botttom_nav_bar/bottom_nav_bar_controller.dart';
+import 'package:gyros_app/view/intro_screen/intro_video/intro_controller.dart';
 import 'package:gyros_app/view/login_page/login_with_email/login_email_controller.dart';
 
 import '../../view/cart_new_section/product_details/product_detail_controllerss/cart_new_controler.dart';
@@ -48,7 +49,7 @@ class ControllerBinding extends Bindings {
     // TODO: implement dependencies
     //Get.put(IntroVideoBoxController());
 
-    Get.put(CartNewController());
+    Get.put(IntroVideoBoxController());
     Get.put(FavCounterController());
     Get.put(NavController());
     Get.put(RozarPayController());
@@ -89,6 +90,7 @@ class ControllerBinding extends Bindings {
     Get.put(CoupanPostController());
     Get.put(InvoiceController());
     Get.put(CartController());
+    Get.put(CartNewController());
 
     //Get.put(HomeController());
 

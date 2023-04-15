@@ -91,7 +91,7 @@ class HomePageController extends GetxController {
 
   @override
   void dispose() {
-    Get.delete<HomePageController>();
+   Get.delete<HomePageController>();
     super.dispose();
   }
 }
